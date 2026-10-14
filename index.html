@@ -17,10 +17,11 @@
   --muted: #6c6b64;
   --line: #e4e2da;
   --yellow: #ffd600;
+  --warn: #e8590c;
   --font: "IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
 }
 @media (prefers-color-scheme: dark) {
-  :root { --bg: #151514; --card: #201f1c; --ink: #f1f0ea; --muted: #a8a69d; --line: #36352f; color-scheme: dark; }
+  :root { --bg: #151514; --card: #201f1c; --ink: #f1f0ea; --muted: #a8a69d; --line: #36352f; --warn: #ff8a3d; color-scheme: dark; }
 }
 * { box-sizing: border-box; }
 html, body { margin: 0; }
@@ -51,6 +52,7 @@ nav.sheets .ic { width: 32px; height: 32px; border-radius: 9px; }
 nav.sheets .ic svg { width: 18px; height: 18px; }
 nav.sheets b { font-size: 15px; }
 footer { text-align: center; font-size: 12px; color: var(--muted); line-height: 1.7; }
+.warn { color: var(--warn); font-weight: 700; }
 @media (prefers-reduced-motion: reduce) { nav a { transition: none; } }
 </style>
 </head>
@@ -94,7 +96,7 @@ footer { text-align: center; font-size: 12px; color: var(--muted); line-height: 
     <nav class="sheets">
     <a href="https://docs.google.com/spreadsheets/d/1I4K1blLkXWn-mdc_XGBO3OkoTErFsyMbcWrSBL9Gy7k/edit" target="_blank" rel="noopener">
       <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></span>
-      <span><b>결제서버 기록</b><span class="d">관리자 전용 · 수정 주의 — 서버가 쓰는 모든 신청 · 결제 · 취소 기록</span></span>
+      <span><b>결제서버 기록</b><span class="d"><span class="warn">관리자 전용 · 수정 주의</span> — 서버가 쓰는 모든 신청 · 결제 · 취소 기록</span></span>
       <span class="go" aria-hidden="true">›</span>
     </a>
     <a href="https://docs.google.com/spreadsheets/d/1PigjuF-j9FS1ol7jM7-KXcB4RcvdBix1EPNWKCfYRgA/edit#gid=338535844" target="_blank" rel="noopener">
