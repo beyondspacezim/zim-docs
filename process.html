@@ -1,0 +1,517 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>미니창고짐 홈페이지 신청·결제 개편 안내</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&display=swap">
+<style>
+/* 레이아웃: 보고서 한 줄(최대 920px). 단계는 실제 순서라 번호, 각 단계 = 설명 | 화면 */
+:root {
+  --bg: #f3f3f1;
+  --paper: #ffffff;
+  --ink: #161616;
+  --muted: #6d6d68;
+  --line: #e2e2dd;
+  --yellow: #ffd600;
+  --yellow-soft: #fff7cc;
+  --old: #8a8a84;
+  --old-soft: #ececea;
+  --ok: #2e6b39;
+  --ok-soft: #e5f1e5;
+  --font: "IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #151514; --paper: #1f1f1d; --ink: #f0f0ec; --muted: #a5a59e; --line: #34342f;
+    --yellow: #ffd600; --yellow-soft: #3a3410; --old: #9a9a93; --old-soft: #2a2a27; --ok: #8fd09a; --ok-soft: #1d3221;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #151514; --paper: #1f1f1d; --ink: #f0f0ec; --muted: #a5a59e; --line: #34342f;
+  --yellow: #ffd600; --yellow-soft: #3a3410; --old: #9a9a93; --old-soft: #2a2a27; --ok: #8fd09a; --ok-soft: #1d3221;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font); font-size: 15.5px; line-height: 1.7;
+       padding-inline: 16px; padding-block: 44px 90px; }
+.wrap { max-width: 920px; margin: 0 auto; display: grid; gap: 56px; }
+h1, h2, h3 { margin: 0; line-height: 1.3; text-wrap: balance; }
+h1 { font-size: 32px; letter-spacing: -0.6px; }
+h2 { font-size: 22px; display: flex; align-items: center; gap: 10px; }
+h3 { font-size: 17px; }
+p { margin: 0; }
+.eyebrow { font-size: 12.5px; letter-spacing: 1.2px; font-weight: 700; color: var(--muted); }
+.lead { color: var(--muted); max-width: 64ch; }
+header { display: grid; gap: 14px; }
+.meta { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { font-size: 13px; font-weight: 700; padding: 4px 11px; border-radius: 999px; background: var(--paper); border: 1px solid var(--line); }
+.chip.y { background: var(--yellow); border-color: var(--yellow); color: #161616; }
+section { display: grid; gap: 18px; }
+.card { background: var(--paper); border: 1px solid var(--line); border-radius: 16px; padding: 22px; min-width: 0; }
+
+/* 전·후 비교 */
+.compare { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; }
+.compare .card { display: grid; gap: 12px; align-content: start; }
+.compare .label { font-size: 13px; font-weight: 700; justify-self: start; padding: 3px 10px; border-radius: 6px; }
+.compare .before .label { background: var(--old-soft); color: var(--old); }
+.compare .after .label { background: var(--yellow); color: #161616; }
+.flow { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+.flow li { display: grid; grid-template-columns: 22px 1fr; gap: 8px; font-size: 14.5px; }
+.flow li::before { content: "→"; color: var(--muted); }
+.flow li:first-child::before { content: "•"; }
+.before .flow li { color: var(--old); }
+.pain { font-size: 14px; color: var(--muted); border-top: 1px dashed var(--line); padding-top: 10px; }
+
+/* 핵심 숫자 없이 요점 */
+.points { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+@media (max-width: 820px) { .points { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.points .card { padding: 18px; display: grid; gap: 4px; }
+.points b { font-size: 16px; }
+.points span { font-size: 14px; color: var(--muted); }
+
+/* 단계 */
+.steps { display: grid; gap: 22px; counter-reset: st; }
+.step { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 26px; align-items: start;
+        background: var(--paper); border: 1px solid var(--line); border-radius: 18px; padding: 24px; }
+@media (max-width: 720px) { .step { grid-template-columns: 1fr; } }
+.step .txt { display: grid; gap: 10px; min-width: 0; }
+.num { width: 34px; height: 34px; border-radius: 50%; background: var(--yellow); color: #161616; font-weight: 700;
+       display: flex; align-items: center; justify-content: center; font-size: 15px; }
+.step ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; font-size: 14.5px; }
+.auto { font-size: 13px; font-weight: 700; color: var(--ok); background: var(--ok-soft); padding: 3px 9px; border-radius: 6px; justify-self: start; }
+.shot { margin: 0; display: grid; gap: 6px; justify-items: center; min-width: 0; }
+.shot img { width: 100%; height: auto; border-radius: 12px; border: 1px solid var(--line); background: #fff; display: block; }
+.shot.tall img { max-width: 360px; }
+.shot figcaption { font-size: 12.5px; color: var(--muted); text-align: center; }
+.note { font-size: 13.5px; color: var(--muted); background: var(--paper); border: 1px dashed var(--line); border-radius: 12px; padding: 12px 16px; }
+
+/* 표 */
+.tablebox { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 14.5px; min-width: 560px; }
+th, td { text-align: left; padding: 11px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-size: 12.5px; letter-spacing: 0.6px; color: var(--muted); font-weight: 700; }
+td.old { color: var(--old); }
+.tag { display: inline-block; font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 6px; white-space: nowrap; }
+.tag.done { background: var(--ok-soft); color: var(--ok); }
+.tag.wait { background: var(--yellow-soft); color: var(--ink); }
+.tag.next { background: var(--old-soft); color: var(--old); }
+.plain { margin: 0; padding-left: 20px; display: grid; gap: 8px; font-size: 14.5px; }
+
+/* AS-IS / TO-BE 표 */
+table.ab th.asis, table.ab td.asis { width: 38%; }
+table.ab th.tobe, table.ab td.tobe { width: 42%; }
+table.ab th.asis { color: var(--old); }
+table.ab th.tobe { color: var(--ink); }
+table.ab td.asis { color: var(--old); background: var(--old-soft); }
+table.ab td.tobe { background: var(--yellow-soft); }
+table.ab thead th.asis, table.ab thead th.tobe { font-size: 13px; letter-spacing: 1px; }
+table.ab td.item { font-weight: 700; white-space: nowrap; }
+.tobe small, .asis small { display: block; font-size: 12.5px; color: var(--muted); margin-top: 2px; }
+.ablabel { display: inline-block; font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 6px; }
+.ablabel.a { background: var(--old-soft); color: var(--old); }
+.ablabel.b { background: var(--yellow); color: #161616; }
+
+/* 결제 순간 자동 처리 흐름 */
+.chain { display: grid; gap: 10px; }
+.link { display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: 14px; align-items: start;
+        background: var(--paper); border: 1px solid var(--line); border-radius: 14px; padding: 14px 18px; }
+@media (max-width: 560px) { .link { grid-template-columns: 1fr; gap: 4px; } }
+.link .when { font-size: 13px; font-weight: 700; color: var(--ok); font-variant-numeric: tabular-nums; }
+.link .what { display: grid; gap: 2px; min-width: 0; }
+.link .what b { font-size: 15px; }
+.link .what span { font-size: 14px; color: var(--muted); }
+.swatch { display: inline-block; padding: 0 6px; border-radius: 4px; background: #fff2cc; color: #161616; border: 1px solid #e8d9a8; font-weight: 700; }
+footer { color: var(--muted); font-size: 13px; border-top: 1px solid var(--line); padding-top: 16px; }
+@media print {
+  @page { size: A4; margin: 14mm 12mm; }
+  :root { --bg: #ffffff; }
+  body { padding-block: 0; font-size: 13px; }
+  .wrap, section, .steps, .chain { display: block; }
+  .wrap > * + * { margin-top: 26px; }
+  section > * + *, .steps > * + *, .chain > * + * { margin-top: 12px; }
+  .step, .card, .link, tr, figure { break-inside: avoid; }
+  h2 { break-after: avoid; }
+  .wrap > footer { display: none; }   /* 날짜는 맨 위에 있다 — 마지막 장에 한 줄만 남지 않게 */
+  .tablebox { overflow: visible; }
+  table { min-width: 0; }
+  .shot img { max-height: 120mm; width: auto; max-width: 100%; }
+}
+</style>
+</head>
+<body>
+<a href="./" style="position:fixed;top:calc(env(safe-area-inset-top,0px) + 12px);left:12px;z-index:10;
+font:600 13px/1 'IBM Plex Sans KR','Apple SD Gothic Neo',sans-serif;color:#171716;background:#ffd600;
+padding:8px 12px;border-radius:999px;text-decoration:none;box-shadow:0 1px 4px rgba(0,0,0,.15)" class="no-print">← 목록</a>
+<style>@media print{.no-print{display:none!important}}</style>
+
+
+<div class="wrap">
+
+<header>
+  <span class="eyebrow">미니창고짐 · 운영 안내 · 2026.10.13 업데이트</span>
+  <h1>미니창고짐 홈페이지 신청·결제 개편 안내</h1>
+  <p class="lead">고객이 홈페이지 배치도에서 창고를 고르고, 신청부터 결제·연장까지 직접 마칠 수 있게 바꿨습니다. 결제가 끝나는 순간 계약 기록, 지점 장부 기재, 배치도 '사용중' 표시, 알림 메일까지 자동으로 처리됩니다.</p>
+  <div class="meta">
+    <span class="chip y">1차 오픈: 신내 1호점 · 신대방점</span>
+    <span class="chip">실제 결제 시험 완료 (신규 · 연장 · 취소 · 메일)</span>
+    <span class="chip">지점 원본 시트 자동 기재: 신내 1호점 적용</span>
+    <span class="chip">카카오 알림톡: 매니저 작업 중</span>
+  </div>
+</header>
+
+<section>
+  <h2>AS-IS / TO-BE 한눈에</h2>
+  <div class="compare">
+    <div class="card before">
+      <span class="label">AS-IS · 이전</span>
+      <ol class="flow">
+        <li>고객이 홈페이지에서 이용신청서만 작성 (회원가입 없음)</li>
+        <li>매니저가 신청 내용 확인</li>
+        <li>매니저가 사이다페이 결제 링크를 만들어 1:1로 발송</li>
+        <li>고객 결제 → 매니저가 확인 후 지점 시트에 직접 기록 · 배치도 사용중 체크</li>
+        <li>연장 때마다 매니저가 다시 링크 발송</li>
+      </ol>
+      <p class="pain">신청만 하고 결제하지 않은 건이 섞이고, 고객은 남은 기간·영수증을 매니저에게 물어봐야 알 수 있었습니다.</p>
+    </div>
+    <div class="card after">
+      <span class="label">TO-BE · 이후</span>
+      <ol class="flow">
+        <li>고객이 배치도에서 빈 창고 선택 → 회원 로그인</li>
+        <li>신청서 작성 (회원 정보 자동 입력) → 바로 사이다페이 결제</li>
+        <li><span>결제 완료 순간 계약 시트 · 결제현황 시트 · <b>지점 원본 시트</b> 자동 기록</span></li>
+        <li>배치도에 '사용중' 자동 표시 · 같은 창고 재신청 차단</li>
+        <li>고객·관리자 결제 완료 메일 자동 발송, 연장은 마이페이지에서 직접</li>
+      </ol>
+      <p class="pain">매니저는 결제된 건을 메일로 확인하고 출입 안내만 하면 됩니다. 결제 금액은 서버가 배치도 요금으로 계산해 고객이 바꿀 수 없습니다.</p>
+    </div>
+  </div>
+
+  <div class="card tablebox">
+    <table class="ab">
+      <thead><tr><th>항목</th><th class="asis">AS-IS</th><th class="tobe">TO-BE</th></tr></thead>
+      <tbody>
+        <tr><td class="item">신청</td><td class="asis">비회원 신청서, 결제와 분리</td><td class="tobe">회원 로그인 후 신청 → 곧바로 결제<small>결제하지 않은 신청은 당일 자동 정리</small></td></tr>
+        <tr><td class="item">결제 링크</td><td class="asis">매니저가 만들어 1:1 발송</td><td class="tobe">신규·연장 모두 고객이 직접 결제</td></tr>
+        <tr><td class="item">결제 금액</td><td class="asis">매니저가 링크에 입력</td><td class="tobe">서버가 배치도 요금으로 계산 (고객이 바꿀 수 없음)</td></tr>
+        <tr><td class="item">사이다페이 상품명</td><td class="asis">매번 다르게 입력</td><td class="tobe"><b>S11_12개월분</b> 형식 고정 (연장은 끝에 ' (연장)')<small>정산 때 창고와 바로 대조</small></td></tr>
+        <tr><td class="item">지점 원본 시트</td><td class="asis">매니저가 사용중 체크 · 계약일 · 전화 · 성함 직접 입력</td><td class="tobe">A 사용중 · O 계약일 · P 전화 · Q 성함 · R 검색어 · S 결제유형 <b>자동 기재</b><small>결제유형은 <span class="swatch">사이다(홈피)</span> — 매니저가 받은 '사이다' 결제와 구분. 월별 금액(T열~)은 지금처럼 정산 담당</small></td></tr>
+        <tr><td class="item">배치도 '사용중'</td><td class="asis">매니저가 체크할 때까지 '계약가능'으로 보임</td><td class="tobe">원본 시트 A열 체크로 1분 안에 자동 표시<small>그 사이에도 서버가 같은 창고 신규 신청을 막음</small></td></tr>
+        <tr><td class="item">이중 결제</td><td class="asis">같은 창고에 결제가 두 번 들어온 사례 있음</td><td class="tobe">먼저 결제한 고객이 창고를 가져가고 다른 결제창은 자동으로 닫힘 · 결제된 창고는 신규 신청 차단</td></tr>
+        <tr><td class="item">결제 기록 확인</td><td class="asis">사이다페이 관리자 화면에서 찾기</td><td class="tobe">'홈페이지 결제현황' 시트에 결제 후 <b>몇 초 안에</b> 반영 (지점별 탭)</td></tr>
+        <tr><td class="item">결제 알림</td><td class="asis">없음 (매니저가 직접 확인)</td><td class="tobe">고객 메일 + 관리자 운영알림 메일 즉시 발송<small>관리자 메일에 [결제현황 시트 열기] · [지점시트 열기] 버튼</small></td></tr>
+        <tr><td class="item">신청 메모</td><td class="asis">따로 옮겨 적음</td><td class="tobe">신청서 6번 답이 원본 시트 '검색어'(R열)로 자동 입력</td></tr>
+        <tr><td class="item">연장</td><td class="asis">매달·만기마다 링크 발송</td><td class="tobe">마이페이지 [연장하기] → 결제 → 원본 시트 계약일 끝 날짜 자동 갱신</td></tr>
+        <tr><td class="item">남은 기간 · 영수증</td><td class="asis">고객이 매니저에게 문의</td><td class="tobe">고객이 마이페이지 · 메일에서 직접 확인</td></tr>
+        <tr><td class="item">연장 신청 폼</td><td class="asis">선결제 연장 · 월결제 연장 폼이 따로</td><td class="tobe">폼 하나(/package)에서 결제방식 선택<small>월 결제를 고르면 만족도·보관 물품 질문이 숨겨져 매달 짧게</small></td></tr>
+        <tr><td class="item">연장 안내</td><td class="asis">매니저가 날짜를 챙겨 연락</td><td class="tobe">고객에게 <b>연장 안내 메일</b> 자동 발송 (선결제 30·7일 전, 월결제 7일 전) + 카카오 알림톡 (매니저 작업 중)<small>보낸 기록은 시트 '연장안내메일' 칸에</small></td></tr>
+        <tr><td class="item">매니저 할 일 정리</td><td class="asis">시트를 열어 직접 확인</td><td class="tobe">매일 아침 <b>운영알림 메일</b> — 연장 안내 대상 · 새 결제 · 기간만료 · 확인 필요를 카드로 정리<small>하단에 결제현황 시트 · 지점 원본 시트 바로가기</small></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <h2>결제가 끝나는 순간 자동으로 일어나는 일</h2>
+  <div class="chain">
+    <div class="link"><span class="when">즉시</span><div class="what"><b>계약 시트에 '결제완료' 기록</b><span>같은 창고의 다른 결제창은 닫히고, 그 창고 신규 신청은 서버가 막습니다.</span></div></div>
+    <div class="link"><span class="when">즉시</span><div class="what"><b>지점 원본 시트 기재</b><span>그 창고 줄에 사용중 체크 · 계약일 · 전화 · 성함 · 검색어 · <span class="swatch">사이다(홈피)</span>. 조건이 어긋나면 쓰지 않고 관리자 메일에 '확인 필요'로 알립니다.</span></div></div>
+    <div class="link"><span class="when">즉시</span><div class="what"><b>결제 완료 메일</b><span>고객에게 결제 확인 메일, 관리자에게 고객 정보·원본 시트 기재 결과가 담긴 운영알림.</span></div></div>
+    <div class="link"><span class="when">몇 초 안</span><div class="what"><b>홈페이지 결제현황 시트 갱신</b><span>매니저가 보는 시트. 이전에는 5분마다 갱신해서 결제 직후 바로 보이지 않았습니다.</span></div></div>
+    <div class="link"><span class="when">1분 안</span><div class="what"><b>배치도에 '사용중' 표시</b><span>배치도가 원본 시트를 1분마다 다시 읽습니다. 열려 있던 화면은 새로고침하면 바로 바뀝니다.</span></div></div>
+  </div>
+  <p class="note">서버가 쓰는 칸은 원본 시트의 A · O~S열뿐입니다. 월별 금액·색·메모 등 정산 기재는 지금처럼 정산 담당이 합니다.</p>
+</section>
+
+<section>
+  <h2>고객 화면 — 신규 신청부터 결제까지</h2>
+  <p class="note">아래 화면은 10/12 실제 결제로 시험한 화면입니다. 신규와 연장을 따로 캡처해 창고 번호(S 11, S 9)가 다르고, 연장 시험을 위해 이용 날짜를 시트에서 한 달 앞당겼습니다. 연락처는 가렸습니다.</p>
+  <div class="steps">
+
+    <div class="step">
+      <div class="txt">
+        <span class="num">1</span>
+        <h3>배치도에서 창고 선택 → 신청 화면</h3>
+        <ul>
+          <li>지점 배치도에서 '계약가능' 창고를 누르면 그 자리에서 신청 화면이 열립니다.</li>
+          <li>로그인하지 않았으면 로그인 안내가 뜨고, 로그인 후 고르던 창고의 신청 화면으로 돌아옵니다.</li>
+          <li>네이버·구글 간편가입도 됩니다.</li>
+        </ul>
+      </div>
+      <figure class="shot tall"><img src="img/01_login.jpg" alt="신청 화면 위 로그인 안내 창" loading="lazy"><figcaption>로그인 안내 (비회원일 때)</figcaption></figure>
+    </div>
+
+    <div class="step">
+      <div class="txt">
+        <span class="num">2</span>
+        <h3>신청서 작성</h3>
+        <ul>
+          <li>지점·창고·요금은 배치도에서 넘어와 고칠 수 없습니다.</li>
+          <li>이름·연락처는 회원 정보에서 자동으로 채워집니다.</li>
+          <li>결제방식(월 결제 / 6개월·12개월 선결제)을 고르면 결제 금액이 바로 보입니다.</li>
+          <li>계약 안내·환불 규정 등 필수 안내는 내용을 끝까지 읽어야 동의할 수 있습니다.</li>
+        </ul>
+      </div>
+      <figure class="shot tall"><img src="img/02_form.jpg" alt="이용신청서 화면" loading="lazy"><figcaption>신청서 — 결제방식 · 신청자 정보 · 필수 동의</figcaption></figure>
+    </div>
+
+    <div class="step">
+      <div class="txt">
+        <span class="num">3</span>
+        <h3>사이다페이 결제</h3>
+        <ul>
+          <li>[신청하기]를 누르면 바로 사이다페이 결제 화면으로 넘어갑니다.</li>
+          <li>상품명은 <b>S11_12개월분</b> 형식(연장은 ' (연장)')으로 찍혀 정산 때 창고와 바로 대조됩니다. 판매자는 해당 지점으로 표시됩니다.</li>
+          <li>카드결제 · 카카오페이 · 페이코를 쓸 수 있습니다.</li>
+        </ul>
+        <span class="auto">금액은 서버가 계산 — 고객이 바꿀 수 없음</span>
+      </div>
+      <figure class="shot tall"><img src="img/03_ciderpay.jpg" alt="사이다페이 결제 화면" loading="lazy"><figcaption>사이다페이 결제 화면</figcaption></figure>
+    </div>
+
+    <div class="step">
+      <div class="txt">
+        <span class="num">4</span>
+        <h3>카드 결제</h3>
+        <ul>
+          <li>카드사를 고르고 결제를 마칩니다.</li>
+          <li>카드 내역에는 결제대행사 (주)유디아이디로 표시된다는 안내를 신청서에 미리 넣었습니다.</li>
+        </ul>
+      </div>
+      <figure class="shot tall"><img src="img/04_card.jpg" alt="카드사 선택 화면" loading="lazy"><figcaption>카드 결제 (나이스페이)</figcaption></figure>
+    </div>
+
+    <div class="step">
+      <div class="txt">
+        <span class="num">5</span>
+        <h3>결제 완료 → 홈페이지로 복귀</h3>
+        <ul>
+          <li>결제가 끝나면 신청하던 배치도 페이지로 돌아와 '결제가 완료되었습니다' 안내가 뜹니다.</li>
+          <li>결제를 중간에 그만두고 돌아오면 '다시 신청 / 신청 취소'를 묻는 안내가 대신 뜹니다.</li>
+        </ul>
+        <span class="auto">계약 · 결제현황 · 지점 원본 시트 자동 기록</span>
+      </div>
+      <figure class="shot"><img src="img/05_paid.jpg" alt="결제 완료 안내" loading="lazy"><figcaption>결제 완료 안내 → [마이페이지로 이동]</figcaption></figure>
+    </div>
+
+    <div class="step">
+      <div class="txt">
+        <span class="num">6</span>
+        <h3>마이페이지에 이용 내역</h3>
+        <ul>
+          <li>결제한 계약이 회원 마이페이지에 바로 나타납니다.</li>
+          <li>상태는 이용중 · 이용예정 · 기간만료 · 이용종료 · 취소됨으로 구분되고, 상태별로 걸러 볼 수 있습니다.</li>
+          <li>[영수증 보기]로 카드 영수증을 언제든 다시 볼 수 있습니다.</li>
+        </ul>
+      </div>
+      <figure class="shot"><img src="img/06_mypage.jpg" alt="마이페이지 이용 내역" loading="lazy"><figcaption>마이페이지 — 시작일 전이라 '이용예정'</figcaption></figure>
+    </div>
+
+    <div class="step">
+      <div class="txt">
+        <span class="num">7</span>
+        <h3>결제 완료 메일</h3>
+        <ul>
+          <li>고객에게 결제 확인 메일이 자동으로 갑니다 (회원 이메일).</li>
+          <li>같은 순간 관리자에게도 고객 이름·연락처·창고·금액과 원본 시트 기재 결과가 담긴 운영알림 메일이 갑니다. [결제현황 시트 열기] · [지점시트 열기] 버튼이 있습니다.</li>
+          <li>보내는 주소는 beyondspace.zim@gmail.com (챗봇 알림과 같은 계정)입니다.</li>
+        </ul>
+        <span class="auto">고객 메일 + 관리자 메일 자동 발송</span>
+      </div>
+      <figure class="shot"><img src="img/07_mail.jpg" alt="고객 결제 완료 메일" loading="lazy"><figcaption>고객이 받는 결제 완료 메일</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>고객 화면 — 연장</h2>
+  <div class="steps">
+
+    <div class="step">
+      <div class="txt">
+        <span class="num">8</span>
+        <h3>종료일이 다가오면 [연장하기]</h3>
+        <ul>
+          <li>마이페이지 계약 카드에 [연장하기] 버튼이 생깁니다.</li>
+          <li>월 결제는 종료 7일 전, 선결제는 종료 30일 전부터 종료 후 14일까지 보입니다.</li>
+          <li>남은 날짜가 카드에 함께 표시됩니다.</li>
+        </ul>
+      </div>
+      <figure class="shot"><img src="img/08_renew_btn.jpg" alt="연장하기 버튼이 보이는 마이페이지" loading="lazy"><figcaption>종료 1일 전 — [연장하기]</figcaption></figure>
+    </div>
+
+    <div class="step">
+      <div class="txt">
+        <span class="num">9</span>
+        <h3>연장 결제</h3>
+        <ul>
+          <li>갱신일은 기존 종료일 다음날로 자동 지정되어 고객이 바꿀 수 없습니다.</li>
+          <li>결제방식(월 결제 / 선결제)을 다시 고를 수 있습니다.</li>
+          <li>기존 계약 조건 안내를 끝까지 읽고 동의해야 결제할 수 있습니다.</li>
+          <li>계약한 본인 계정으로만 연장할 수 있습니다.</li>
+        </ul>
+      </div>
+      <figure class="shot tall"><img src="img/09_renew_pay.jpg" alt="연장 결제 화면" loading="lazy"><figcaption>연장 — 결제방식 선택 · 조건 동의 · 결제</figcaption></figure>
+    </div>
+
+    <div class="step">
+      <div class="txt">
+        <span class="num">10</span>
+        <h3>연장 후 마이페이지</h3>
+        <ul>
+          <li>지금 기간 카드에 '다음 기간 연장 완료 — ○월 ○일까지'가 표시됩니다.</li>
+          <li>다음 기간은 '연장' 표시와 함께 '이용예정' 카드로 따로 쌓입니다.</li>
+        </ul>
+        <span class="auto">연장 계약 기록 + 원본 시트 계약일 자동 갱신</span>
+      </div>
+      <figure class="shot"><img src="img/10_renewed.jpg" alt="연장 후 마이페이지" loading="lazy"><figcaption>지금 기간(이용중) + 다음 기간(이용예정)</figcaption></figure>
+    </div>
+
+    <div class="step">
+      <div class="txt">
+        <span class="num">11</span>
+        <h3>연장 완료 메일</h3>
+        <ul>
+          <li>'연장 결제가 완료되었습니다' 메일이 고객에게, 연장 알림이 관리자에게 갑니다.</li>
+        </ul>
+      </div>
+      <figure class="shot"><img src="img/11_renew_mail.jpg" alt="연장 완료 메일" loading="lazy"><figcaption>고객이 받는 연장 완료 메일</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>자동으로 나가는 알림 메일</h2>
+  <p class="note">아래 화면은 10/13 가짜 데이터(홍길동 등)로 보낸 예시 메일입니다. 실제 고객 정보가 아닙니다.</p>
+  <div class="steps">
+
+    <div class="step">
+      <div class="txt">
+        <span class="num">12</span>
+        <h3>매니저 아침 운영알림</h3>
+        <ul>
+          <li>매일 아침 그날 챙길 일만 한 통으로 보냅니다. 챙길 일이 없는 날은 보내지 않습니다.</li>
+          <li>맨 위에 연장 안내 · 새 결제 · 기간만료 · 확인 필요 건수를 보여 주고, 아래에 고객별 카드로 정리합니다.</li>
+          <li>카드마다 할 일을 색으로 구분합니다. <b>초록</b>은 자동 처리돼 할 일 없음, <b>주황</b>은 매니저가 할 일입니다.</li>
+        </ul>
+        <span class="auto">매니저가 시트를 뒤지지 않아도 됨</span>
+      </div>
+      <figure class="shot"><img src="img/12_digest_top.jpg" alt="아침 운영알림 메일 윗부분 — 요약 숫자와 연장 안내 카드" loading="lazy"><figcaption>요약 숫자 + 연장 안내 대상 (보낼 문구 포함)</figcaption></figure>
+    </div>
+
+    <div class="step">
+      <div class="txt">
+        <span class="num">13</span>
+        <h3>새 결제 · 기간만료 · 확인 필요</h3>
+        <ul>
+          <li>새 결제는 신규/연장 표시와 함께, 원본 시트가 자동 기재됐는지 또는 매니저가 체크해야 하는지 알려 줍니다.</li>
+          <li>종료일이 지났는데 정리되지 않은 고객, 이중 결제 의심 같은 확인 필요 건을 따로 모읍니다.</li>
+          <li>하단에서 결제현황 시트와 <b>지점별 원본 시트</b>를 바로 열 수 있습니다 (관리자 권한이 있는 사람만 열림).</li>
+        </ul>
+      </div>
+      <figure class="shot"><img src="img/13_digest_cards.jpg" alt="아침 운영알림 메일 — 새 결제와 기간만료 카드" loading="lazy"><figcaption>새 결제 · 기간만료 카드</figcaption></figure>
+    </div>
+
+    <div class="step">
+      <div class="txt">
+        <span class="num">14</span>
+        <h3>시트 바로가기</h3>
+        <ul>
+          <li>[결제현황 시트 열기] 버튼 아래에 9개 지점의 원본 시트 링크를 나열했습니다.</li>
+          <li>지점별로 받는 사람을 나누면 그 지점 링크만 보입니다.</li>
+          <li>결제 완료 운영알림에도 [지점시트 열기] 버튼이 있습니다.</li>
+        </ul>
+      </div>
+      <figure class="shot"><img src="img/14_digest_bottom.jpg" alt="아침 운영알림 메일 하단 — 확인 필요 카드와 시트 바로가기" loading="lazy"><figcaption>확인 필요 + 결제현황 · 지점 원본 시트 바로가기</figcaption></figure>
+    </div>
+
+    <div class="step">
+      <div class="txt">
+        <span class="num">15</span>
+        <h3>고객 연장 안내 메일</h3>
+        <ul>
+          <li>선결제는 종료 30일 전·7일 전, 월결제는 7일 전 오전 10시에 회원 이메일로 갑니다. 관리자에게는 가지 않습니다.</li>
+          <li>[연장하기]를 누르면 그 계약의 연장 화면으로 바로 갑니다.</li>
+          <li>연장하지 않을 고객은 고객센터(카카오톡 채널)로 알려 달라고 안내합니다. 종료 버튼은 일부러 두지 않았습니다.</li>
+          <li>이미 연장한 고객, 취소·종료된 계약에는 가지 않고, 같은 안내는 두 번 가지 않습니다.</li>
+        </ul>
+        <span class="auto">보낸 기록은 시트 '연장안내메일' 칸에</span>
+      </div>
+      <figure class="shot"><img src="img/15_renew_mail.jpg" alt="고객 연장 안내 메일" loading="lazy"><figcaption>종료 30일 전 안내 (예시)</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>매니저 업무 AS-IS / TO-BE</h2>
+  <div class="card tablebox">
+    <table class="ab">
+      <thead><tr><th>업무</th><th class="asis">AS-IS</th><th class="tobe">TO-BE (홈페이지 결제 고객)</th></tr></thead>
+      <tbody>
+        <tr><td class="item">신규 결제</td><td class="asis">신청 확인 → 결제 링크 발송 → 입금 확인 → 시트 입력 · 배치도 체크</td><td class="tobe">운영알림 메일로 확인 → <b>출입 방법 안내만</b><small>원본 시트 기재 · 배치도 사용중은 자동 (신내 1호점 적용, 신대방점 연결 예정)</small></td></tr>
+        <tr><td class="item">연장 안내</td><td class="asis">종료일을 챙겨 고객에게 연락</td><td class="tobe">회원 고객은 연장 안내 메일이 자동으로 감. 비회원만 아침 운영알림의 문구로 연락</td></tr>
+        <tr><td class="item">연장</td><td class="asis">매달·만기마다 결제 링크 발송, 계약일 수정</td><td class="tobe">고객이 마이페이지에서 결제, 원본 시트 계약일 자동 갱신</td></tr>
+        <tr><td class="item">기존 고객 첫 연장</td><td class="asis">결제 링크 발송</td><td class="tobe">연장 링크로 가입·결제 → 이번 한 번은 원본 시트 <b>수동 입력</b> (메일로 알림) → 다음 연장부터 자동</td></tr>
+        <tr><td class="item">월별 금액 · 정산</td><td class="asis">정산 담당 기재</td><td class="tobe">같음 — 상품명 <b>S11_12개월분</b> 형식으로 대조가 쉬워짐</td></tr>
+        <tr><td class="item">결제 기록 확인</td><td class="asis">사이다페이에서 찾기</td><td class="tobe">'홈페이지 결제현황' 시트(보기 전용) · 운영알림 메일의 [지점시트 열기]</td></tr>
+        <tr><td class="item">남은 기간 · 영수증 문의</td><td class="asis">시트·사이다페이에서 찾아 안내</td><td class="tobe">고객이 마이페이지 · 메일에서 직접 확인</td></tr>
+        <tr><td class="item">이용 종료</td><td class="asis">시트 정리</td><td class="tobe">짐 회수 후 관리자에게 알리면 '이용종료' 처리 · 원본 시트 정리</td></tr>
+        <tr><td class="item">환불 (결제 취소)</td><td class="asis">사이다페이에서 취소 · 시트 정리</td><td class="tobe">사이다페이에서 취소 → 계약·결제현황 시트 · 마이페이지 자동 반영<small>원본 시트 사용중 해제·정리는 매니저가 직접</small></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <h2>기존 고객은 이렇게 넘어옵니다</h2>
+  <div class="compare">
+    <div class="card before">
+      <span class="label">AS-IS</span>
+      <ol class="flow">
+        <li>비회원, 지점 시트로만 관리</li>
+        <li>만기마다 매니저가 결제 링크 발송</li>
+        <li>남은 기간은 고객센터에 문의</li>
+      </ol>
+    </div>
+    <div class="card after">
+      <span class="label">TO-BE</span>
+      <ol class="flow">
+        <li>연장 링크를 자동으로 만들어 카카오 알림톡으로 발송 (준비 중)</li>
+        <li>고객이 링크에서 회원가입 → 연장 결제</li>
+        <li>이때부터 회원 계약 — 다음 연장은 마이페이지 · 알림톡으로</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>진행 상황</h2>
+  <div class="card tablebox">
+    <table>
+      <thead><tr><th>항목</th><th>상태</th><th>내용</th></tr></thead>
+      <tbody>
+        <tr><td><b>홈페이지 창고 신청 · 카드 결제</b></td><td><span class="tag done">운영 중</span></td><td>고객이 배치도에서 빈 창고를 골라 신청부터 결제까지 직접 마침. 신내 1호점 · 신대방점</td></tr>
+        <tr><td><b>고객 마이페이지</b></td><td><span class="tag done">운영 중</span></td><td>고객이 이용 기간 · 남은 날짜 · 영수증을 직접 확인</td></tr>
+        <tr><td><b>연장 결제</b></td><td><span class="tag done">운영 중</span></td><td>고객이 마이페이지 [연장하기]로 직접 결제 (선결제 · 월결제 선택). 기존 고객은 연장 링크로</td></tr>
+        <tr><td><b>결제 완료 알림 메일</b></td><td><span class="tag done">운영 중</span></td><td>결제 즉시 고객에게 확인 메일, 매니저에게 고객 정보가 담긴 알림 메일</td></tr>
+        <tr><td><b>매니저용 결제 현황 시트</b></td><td><span class="tag done">운영 중</span></td><td>홈페이지 결제가 지점별로 바로 정리됨 (매니저는 보기 전용)</td></tr>
+        <tr><td><b>지점 장부 자동 기재 · 배치도 '사용중' 자동</b></td><td><span class="tag done">신내 1호점 운영 중</span></td><td>결제되면 지점 원본 시트에 고객 정보가 들어가고 배치도가 '사용중'으로 바뀜. 다른 지점은 시트 연결 후 적용</td></tr>
+        <tr><td><b>매니저 아침 알림 메일</b></td><td><span class="tag done">운영 중</span></td><td>매일 아침 연장 안내 대상 · 새 결제 · 기간만료 · 확인 필요 건을 한 통으로 정리</td></tr>
+        <tr><td><b>고객 연장 안내 메일</b></td><td><span class="tag done">운영 중</span></td><td>종료일이 다가오면 고객에게 자동 발송 (선결제 30·7일 전, 월결제 7일 전). 연장하지 않을 고객은 카카오톡 상담으로 연결</td></tr>
+        <tr><td><b>카카오 알림톡</b></td><td><span class="tag wait">매니저 작업 중</span></td><td>결제 완료 · 연장 안내를 카카오톡으로도 발송. 템플릿 검수 · 연동 정보 준비 중</td></tr>
+        <tr><td><b>나머지 지점 오픈</b></td><td><span class="tag next">다음</span></td><td>지점별 결제 계정 등록 + 배치도 · 원본 시트 연결 후 순차 적용</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<footer>미니창고짐 홈페이지 신청·결제 개편 안내 · 2026.10.12 작성 · 10.13 업데이트 (알림 메일 추가)</footer>
+
+</div>
+
+</body>
+</html>
