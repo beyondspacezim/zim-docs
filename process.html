@@ -88,6 +88,14 @@ section { display: grid; gap: 18px; }
 .shot img { width: 100%; height: auto; border-radius: 12px; border: 1px solid var(--line); background: #fff; display: block; }
 .shot.tall img { max-width: 360px; }
 .shot figcaption { font-size: 12.5px; color: var(--muted); text-align: center; }
+.kakao { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 0; }
+@media (max-width: 640px) { .kakao { grid-template-columns: 1fr; justify-items: center; } }
+.kakao figure { margin: 0; display: grid; gap: 6px; justify-items: center; min-width: 0; }
+.kakao img { width: 100%; max-width: 300px; height: auto; border-radius: 12px; border: 1px solid var(--line); display: block; }
+.kakao figcaption { font-size: 12.5px; color: var(--muted); text-align: center; }
+.kakao-card { background: var(--paper); border: 1px solid var(--line); border-radius: 18px; padding: 24px; display: grid; gap: 16px; }
+.kakao-card .txt { display: grid; gap: 10px; min-width: 0; }
+.kakao-card ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; font-size: 14.5px; }
 .note { font-size: 13.5px; color: var(--muted); background: var(--paper); border: 1px dashed var(--line); border-radius: 12px; padding: 12px 16px; }
 
 /* 표 */
@@ -134,7 +142,7 @@ footer { color: var(--muted); font-size: 13px; border-top: 1px solid var(--line)
   .wrap, section, .steps, .chain { display: block; }
   .wrap > * + * { margin-top: 26px; }
   section > * + *, .steps > * + *, .chain > * + * { margin-top: 12px; }
-  .step, .card, .link, tr, figure { break-inside: avoid; }
+  .step, .card, .link, tr, figure, .kakao { break-inside: avoid; }
   h2 { break-after: avoid; }
   .wrap > footer { display: none; }   /* 날짜는 맨 위에 있다 — 마지막 장에 한 줄만 남지 않게 */
   .tablebox { overflow: visible; }
@@ -160,7 +168,7 @@ padding:8px 12px;border-radius:999px;text-decoration:none;box-shadow:0 1px 4px r
     <span class="chip y">1차 오픈: 신내 1호점 · 신대방점</span>
     <span class="chip">실제 결제 시험 완료 (신규 · 연장 · 취소 · 메일)</span>
     <span class="chip">지점 원본 시트 자동 기재: 신내 1호점 적용</span>
-    <span class="chip">카카오 알림톡: 매니저 작업 중</span>
+    <span class="chip">카카오 알림톡 연동 완료</span>
   </div>
 </header>
 
@@ -203,12 +211,12 @@ padding:8px 12px;border-radius:999px;text-decoration:none;box-shadow:0 1px 4px r
         <tr><td class="item">배치도 '사용중'</td><td class="asis">매니저가 체크할 때까지 '계약가능'으로 보임</td><td class="tobe">원본 시트 A열 체크로 1분 안에 자동 표시<small>그 사이에도 서버가 같은 창고 신규 신청을 막음</small></td></tr>
         <tr><td class="item">이중 결제</td><td class="asis">같은 창고에 결제가 두 번 들어온 사례 있음</td><td class="tobe">먼저 결제한 고객이 창고를 가져가고 다른 결제창은 자동으로 닫힘 · 결제된 창고는 신규 신청 차단</td></tr>
         <tr><td class="item">결제 기록 확인</td><td class="asis">사이다페이 관리자 화면에서 찾기</td><td class="tobe">'홈페이지 결제현황' 시트에 결제 후 <b>몇 초 안에</b> 반영 (지점별 탭)</td></tr>
-        <tr><td class="item">결제 알림</td><td class="asis">없음 (매니저가 직접 확인)</td><td class="tobe">고객 메일 + 관리자 운영알림 메일 즉시 발송<small>관리자 메일에 [결제현황 시트 열기] · [지점시트 열기] 버튼</small></td></tr>
+        <tr><td class="item">결제 알림</td><td class="asis">없음 (매니저가 직접 확인)</td><td class="tobe">고객 메일 + <b>카카오 알림톡</b> + 관리자 운영알림 메일 즉시 발송<small>결제가 취소되면 매니저에게 정리할 일을 담은 취소 알림 메일</small></td></tr>
         <tr><td class="item">신청 메모</td><td class="asis">따로 옮겨 적음</td><td class="tobe">신청서 6번 답이 원본 시트 '검색어'(R열)로 자동 입력</td></tr>
         <tr><td class="item">연장</td><td class="asis">매달·만기마다 링크 발송</td><td class="tobe">마이페이지 [연장하기] → 결제 → 원본 시트 계약일 끝 날짜 자동 갱신</td></tr>
         <tr><td class="item">남은 기간 · 영수증</td><td class="asis">고객이 매니저에게 문의</td><td class="tobe">고객이 마이페이지 · 메일에서 직접 확인</td></tr>
         <tr><td class="item">연장 신청 폼</td><td class="asis">선결제 연장 · 월결제 연장 폼이 따로</td><td class="tobe">폼 하나(/package)에서 결제방식 선택<small>월 결제를 고르면 만족도·보관 물품 질문이 숨겨져 매달 짧게</small></td></tr>
-        <tr><td class="item">연장 안내</td><td class="asis">매니저가 날짜를 챙겨 연락</td><td class="tobe">고객에게 <b>연장 안내 메일</b> 자동 발송 (선결제 30·7일 전, 월결제 7일 전) + 카카오 알림톡 (매니저 작업 중)<small>보낸 기록은 시트 '연장안내메일' 칸에</small></td></tr>
+        <tr><td class="item">연장 안내</td><td class="asis">매니저가 날짜를 챙겨 연락</td><td class="tobe">고객에게 <b>연장 안내 메일</b> 자동 발송 (선결제 30·7일 전, 월결제 7일 전) + <b>카카오 알림톡</b><small>보낸 기록은 시트 '연장안내메일' · '알림톡' 칸에</small></td></tr>
         <tr><td class="item">매니저 할 일 정리</td><td class="asis">시트를 열어 직접 확인</td><td class="tobe">매일 아침 <b>운영알림 메일</b> — 연장 안내 대상 · 새 결제 · 기간만료 · 확인 필요를 카드로 정리<small>하단에 결제현황 시트 · 지점 원본 시트 바로가기</small></td></tr>
       </tbody>
     </table>
@@ -447,6 +455,29 @@ padding:8px 12px;border-radius:999px;text-decoration:none;box-shadow:0 1px 4px r
 </section>
 
 <section>
+  <h2>고객 카카오 알림톡</h2>
+  <div class="kakao-card">
+    <div class="txt">
+      <span class="num">16</span>
+      <h3>결제 완료 · 연장 결제 · 종료 예정을 카카오톡으로</h3>
+      <ul>
+        <li><b>이용 신청 완료</b>와 <b>연장 결제 완료</b>는 결제가 끝나는 즉시, <b>이용 종료 예정 안내</b>는 연장 안내 메일과 같은 때(선결제 종료 30·7일 전, 월결제 7일 전) 갑니다.</li>
+        <li>고객 이름 · 지점 · 창고 · 결제방식 · 금액 · 이용 기간이 자동으로 채워집니다.</li>
+        <li>종료 예정 안내의 [내 창고 확인하기]는 고객 마이페이지로 연결됩니다.</li>
+        <li>카카오톡을 받을 수 없는 고객에게는 같은 내용이 문자로 대신 갑니다.</li>
+      </ul>
+      <span class="auto">보낸 기록은 시트 '알림톡' 칸에</span>
+    </div>
+    <div class="kakao">
+      <figure><img src="img/16_kakao_new.jpg" alt="이용 신청 완료 알림톡" loading="lazy"><figcaption>이용 신청 완료</figcaption></figure>
+      <figure><img src="img/17_kakao_renew.jpg" alt="연장 결제 완료 알림톡" loading="lazy"><figcaption>연장 결제 완료</figcaption></figure>
+      <figure><img src="img/18_kakao_ending.jpg" alt="이용 종료 예정 안내 알림톡" loading="lazy"><figcaption>이용 종료 예정 안내</figcaption></figure>
+    </div>
+    <p class="note">10/14 시험 발송 화면입니다 (예시 고객 홍길동).</p>
+  </div>
+</section>
+
+<section>
   <h2>매니저 업무 AS-IS / TO-BE</h2>
   <div class="card tablebox">
     <table class="ab">
@@ -460,7 +491,7 @@ padding:8px 12px;border-radius:999px;text-decoration:none;box-shadow:0 1px 4px r
         <tr><td class="item">결제 기록 확인</td><td class="asis">사이다페이에서 찾기</td><td class="tobe">'홈페이지 결제현황' 시트(보기 전용) · 운영알림 메일의 [지점시트 열기]</td></tr>
         <tr><td class="item">남은 기간 · 영수증 문의</td><td class="asis">시트·사이다페이에서 찾아 안내</td><td class="tobe">고객이 마이페이지 · 메일에서 직접 확인</td></tr>
         <tr><td class="item">이용 종료</td><td class="asis">시트 정리</td><td class="tobe">짐 회수 후 관리자에게 알리면 '이용종료' 처리 · 원본 시트 정리</td></tr>
-        <tr><td class="item">환불 (결제 취소)</td><td class="asis">사이다페이에서 취소 · 시트 정리</td><td class="tobe">사이다페이에서 취소 → 계약·결제현황 시트 · 마이페이지 자동 반영<small>원본 시트 사용중 해제·정리는 매니저가 직접</small></td></tr>
+        <tr><td class="item">환불 (결제 취소)</td><td class="asis">사이다페이에서 취소 · 시트 정리</td><td class="tobe">사이다페이에서 취소 → 계약·결제현황 시트 · 마이페이지 자동 반영<small>매니저에게 <b>결제 취소 알림 메일</b>이 가고, 원본 시트 사용중 해제·정리할 일을 알려 줌</small></td></tr>
       </tbody>
     </table>
   </div>
@@ -502,7 +533,8 @@ padding:8px 12px;border-radius:999px;text-decoration:none;box-shadow:0 1px 4px r
         <tr><td><b>지점 장부 자동 기재 · 배치도 '사용중' 자동</b></td><td><span class="tag done">신내 1호점 운영 중</span></td><td>결제되면 지점 원본 시트에 고객 정보가 들어가고 배치도가 '사용중'으로 바뀜. 다른 지점은 시트 연결 후 적용</td></tr>
         <tr><td><b>매니저 아침 알림 메일</b></td><td><span class="tag done">운영 중</span></td><td>매일 아침 연장 안내 대상 · 새 결제 · 기간만료 · 확인 필요 건을 한 통으로 정리</td></tr>
         <tr><td><b>고객 연장 안내 메일</b></td><td><span class="tag done">운영 중</span></td><td>종료일이 다가오면 고객에게 자동 발송 (선결제 30·7일 전, 월결제 7일 전). 연장하지 않을 고객은 카카오톡 상담으로 연결</td></tr>
-        <tr><td><b>카카오 알림톡</b></td><td><span class="tag wait">매니저 작업 중</span></td><td>결제 완료 · 연장 안내를 카카오톡으로도 발송. 템플릿 검수 · 연동 정보 준비 중</td></tr>
+        <tr><td><b>결제 취소 알림 메일</b></td><td><span class="tag done">운영 중</span></td><td>결제가 취소되면 매니저에게 원본 시트 정리 등 할 일을 바로 알림</td></tr>
+        <tr><td><b>고객 카카오 알림톡</b></td><td><span class="tag done">연동 완료</span></td><td>이용 신청 완료 · 연장 결제 완료 · 이용 종료 예정 안내 3종. 시험 발송 확인, 충전 후 실제 고객 발송 시작</td></tr>
         <tr><td><b>나머지 지점 오픈</b></td><td><span class="tag next">다음</span></td><td>지점별 결제 계정 등록 + 배치도 · 원본 시트 연결 후 순차 적용</td></tr>
       </tbody>
     </table>
