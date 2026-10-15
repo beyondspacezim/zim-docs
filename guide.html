@@ -140,6 +140,11 @@ td.k { font-weight: 700; white-space: nowrap; }
 
 footer { color: var(--muted); font-size: 13px; border-top: 1px solid var(--line); padding-top: 16px; }
 
+/* 10/15~16 업데이트 표시 (오렌지 리본) */
+.rib { display: inline-block; vertical-align: 1px; margin-right: 6px; padding: 0 10px 0 7px; font-size: 11px; font-weight: 700;
+       line-height: 1.7; letter-spacing: .3px; color: #fff; background: #f76707; white-space: nowrap;
+       clip-path: polygon(0 0, 100% 0, calc(100% - 5px) 50%, 100% 100%, 0 100%);
+       -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 @media print {
   @page { size: A4; margin: 14mm 12mm; }
   :root { --bg: #ffffff; }
@@ -178,7 +183,7 @@ padding:8px 12px;border-radius:999px;text-decoration:none;box-shadow:0 1px 4px r
 <section id="routine">
   <h2><span class="no">01</span>매니저의 하루</h2>
   <ol class="routine">
-    <li><div><span class="when">매일 아침 9시쯤</span><b>운영알림 메일 열기</b><span class="d">그날 챙길 일만 한 통으로 옵니다. 챙길 일이 없는 날은 메일이 오지 않습니다. 위 숫자 4칸으로 오늘 일의 양을 봅니다.</span></div></li>
+    <li><div><span class="when">매일 아침 9시쯤</span><b>운영알림 메일 열기</b><span class="d">그날 챙길 일만 한 통으로 옵니다. 챙길 일이 없는 날은 메일이 오지 않습니다. 위 숫자 4칸으로 오늘 일의 양을 봅니다.<br><span class="rib">업데이트</span>맨 위에 <b>"솔라피 잔액 ○원 — 충전 필요"</b>가 보이면 솔라피를 바로 충전합니다 (자동 충전은 쓰지 않습니다).</span></div></li>
     <li><div><span class="when">메일의 주황 상자</span><b>매니저가 할 일만 처리</b><span class="d">초록 상자는 자동으로 끝난 일이라 볼 것만 봅니다. 주황은 연락, 시트 입력, 정리 같은 매니저 몫입니다. 빨강(기간만료·확인 필요)은 그날 처리합니다.</span></div></li>
     <li><div><span class="when">결제가 들어올 때마다</span><b>결제 완료 운영알림 확인 → 출입 방법 안내</b><span class="d">신규 고객에게 비밀번호 등 출입 방법을 보냅니다. 메일 맨 위에 <b>⚠ 확인 필요</b>가 붙어 있으면 <a href="#cases">이럴 땐</a>을 보고 처리합니다.</span></div></li>
     <li><div><span class="when">고객이 나가거나 환불할 때</span><b>원본 시트 정리</b><span class="d">끝난 고객 줄을 '사용만료' 아래로 옮기고 그 창고 줄을 비워 둡니다. 다음 고객이 자동으로 기재되려면 꼭 필요합니다.</span></div></li>
@@ -226,7 +231,7 @@ padding:8px 12px;border-radius:999px;text-decoration:none;box-shadow:0 1px 4px r
     </tbody>
   </table></div>
   <p class="small muted"><span class="cellchip">사이다(홈피)</span> = 홈페이지에서 고객이 직접 결제한 건. <code>사이다</code> = 매니저가 사이다페이 링크를 직접 보내 받은 건. 정산할 때 이 표시로 구분합니다.</p>
-  <p class="small muted">계약일 끝 날짜 = 시작일 + 개월 수 − 1일. 그 날이 없는 달이면 그 달 말일로 적습니다. 예) 15일 시작 1개월 → 다음 달 14일 (<code>261015~261114</code>)</p>
+  <p class="small muted"><span class="rib">업데이트</span>계약일 끝 날짜 = 시작일 + 개월 수 − 1일. 그 날이 없는 달이면 그 달 말일로 적습니다(서버도 같은 규칙). 예) 15일 시작 1개월 → 다음 달 14일 (<code>261015~261114</code>). 홈페이지 월결제는 서버가 시작일만 <code>YYMMDD~</code>로 적습니다.</p>
 
   <h3>꼭 지킬 것</h3>
   <div class="tablebox"><table>
@@ -296,7 +301,7 @@ padding:8px 12px;border-radius:999px;text-decoration:none;box-shadow:0 1px 4px r
       </div>
     </div>
   </div>
-  <div class="note warn"><strong>③ · ④ 기존 고객에게는 매니저가 알림톡을 직접 보냅니다 (솔라피)</strong><span><b>월결제 기존 고객</b>에게 매달 1일 '결제요청', <b>만료가 다가온 기존 고객</b>에게 '창고 계약 종료 사전 안내'를 보냅니다. 보내기 전 명단에서 <b>결제현황 시트에 있는 고객은 뺍니다</b> — 홈페이지 고객에게는 서버가 연장 결제 완료 · 종료 예정 안내 알림톡을 보내므로, 빼지 않으면 같은 안내가 두 번 갑니다.</span></div>
+  <div class="note warn"><strong><span class="rib">업데이트</span>③ · ④ 기존 고객에게는 매니저가 알림톡을 직접 보냅니다 (솔라피)</strong><span>서버가 보내는 알림톡(이용 신청 완료 · 연장 결제 완료 · 종료 예정 안내)은 <b>홈페이지 결제 고객에게만</b> 갑니다. 그 밖의 고객에게는 매니저가 보냅니다 — <b>월결제 고객</b>에게 매달 1일 '결제요청'(사이다 링크 / 계좌이체), <b>만료가 다가온 고객</b>에게 '창고 계약 종료 사전 안내'.</span><span><b>겹침 방지:</b> 보내기 전 명단에서 <b>홈페이지 결제현황 시트에 있는 고객은 뺍니다</b>(매니저 도구가 결제현황 시트를 읽기만 해서 거릅니다). 기존 고객이 연장 링크로 한 번 결제하면 그때부터 홈페이지 고객이 되어 서버가 연장 결제 완료 · 종료 예정 안내를 보냅니다.</span></div>
 </section>
 
 <section id="mails">
@@ -308,7 +313,9 @@ padding:8px 12px;border-radius:999px;text-decoration:none;box-shadow:0 1px 4px r
       <tr><td class="k">아침 운영알림</td><td>매니저</td><td>매일 아침 (할 일 있을 때만)</td><td>연장 안내 대상 · 새 결제 · 기간만료 · 확인 필요. 주황 상자만 처리. 하단에서 지점 원본 시트 바로 열기</td></tr>
       <tr><td class="k">결제 완료 메일</td><td>고객</td><td>결제 즉시</td><td>고객이 받는 확인 메일 (기간 · 금액 · 영수증 · 카카오톡 상담)</td></tr>
       <tr><td class="k">연장 안내 메일</td><td>고객 (회원)</td><td>선결제 종료 30·7일 전, 월결제 7일 전 오전 10시</td><td>결제현황 시트 '연장안내메일' 열에서 보낸 날짜 확인. 연장하지 않을 고객은 카카오톡 상담으로 연락이 옵니다</td></tr>
-      <tr><td class="k">카카오 알림톡</td><td>고객</td><td>① 이용 신청 완료 · ② 연장 결제 완료는 결제 즉시, ③ 종료 예정 안내는 연장 안내 메일과 같은 때. <b>③은 이메일이 없는 고객에게도 갑니다</b></td><td>결제현황 시트 '알림톡' 열에서 보낸 기록 확인 (예: <code>① 2026-10-14 14:50</code>). 카톡이 안 되는 고객에게는 문자로 대신 갑니다</td></tr>
+      <tr><td class="k"><span class="rib">업데이트</span><br>카카오 알림톡</td><td>고객</td><td>① 이용 신청 완료 · ② 연장 결제 완료는 결제 즉시, ③ 종료 예정 안내는 연장 안내 메일과 같은 때. <b>③은 이메일이 없는 고객에게도 갑니다</b></td><td>결제현황 시트 '알림톡' 열에서 보낸 기록 확인 (예: <code>① 2026-10-14 14:50</code>). 카톡이 안 되는 고객에게는 문자로 대신 갑니다. 실패하면 '알림톡 실패' 운영알림 메일이 바로 옵니다</td></tr>
+      <tr><td class="k"><span class="rib">업데이트</span><br>알림톡 실패 알림</td><td>매니저 · 관리자</td><td>실패 즉시 (같은 이유는 하루 한 번)</td><td>실패한 고객과 이유. <b>잔액 부족</b>이면 "솔라피 잔액 부족 — 충전 필요"로 전체에게 갑니다. 모든 실패는 다음 날 아침 운영알림 '확인 필요'에도 나옵니다</td></tr>
+      <tr><td class="k"><span class="rib">업데이트</span><br>결제 취소 알림</td><td>매니저</td><td>결제 취소 즉시</td><td>원본 시트에서 정리할 일 (A 체크 해제 · 고객 줄 정리 · 월별 금액 정리)</td></tr>
     </tbody>
   </table></div>
   <p class="small muted">운영알림에는 고객 이름·연락처가 들어 있습니다. 다른 사람에게 전달하지 마세요.</p>
@@ -322,6 +329,8 @@ padding:8px 12px;border-radius:999px;text-decoration:none;box-shadow:0 1px 4px r
       <tr><td><b>⚠ 원본 시트 '이전 고객 정보/사용중 체크가 남아 있어 기재하지 않음'</b></td><td>그 창고 줄의 이전 고객을 '사용만료' 아래로 옮기고 줄을 비운 뒤, 새 고객을 직접 입력합니다(A 체크 · O~S, 결제유형 <span class="cellchip">사이다(홈피)</span>).</td></tr>
       <tr><td><b>⚠ '○○ 줄이 0개 / 2개'</b></td><td>'사용만료' 위에 그 창고 줄이 없거나 둘입니다. 넘버·사이즈를 고쳐 한 줄로 만든 뒤 직접 입력합니다.</td></tr>
       <tr><td><b>⚠ '전화번호가 달라' · '계약일 끝이 연장 직전 날과 달라'</b></td><td>연장 고객의 원본 줄이 맞는지 확인하고 계약일 끝 날짜를 직접 늘립니다. 다음 연장부터 자동이 되도록 전화번호·계약일 형식을 맞춰 둡니다.</td></tr>
+      <tr><td><span class="rib">업데이트</span><b>"솔라피 잔액 부족 — 충전 필요" 메일 · 아침 경고</b></td><td>솔라피 콘솔에서 바로 충전합니다. 충전 전까지 서버 · 매니저 도구 알림톡이 <b>모두 실패</b>합니다. 실패한 고객에게는 필요하면 직접 연락합니다.</td></tr>
+      <tr><td><span class="rib">업데이트</span><b>'알림톡 실패' 메일 (잔액 외 이유)</b></td><td>솔라피 콘솔 발송 내역에서 이유를 확인하고, 필요하면 고객에게 직접 안내합니다. 같은 실패가 반복되면 관리자에게 알립니다.</td></tr>
       <tr><td><b>⚠ '원본 시트 수동 입력 필요' (기존 고객 첫 연장)</b></td><td>메일의 계약일 · 결제유형대로 원본 시트에 적습니다. <a href="#customers">③ 기존 고객</a> 참고.</td></tr>
       <tr><td><b>환불 (결제 취소)</b></td><td>사이다페이 관리자에서 취소합니다. 결제현황 시트 · 고객 마이페이지는 자동으로 '취소됨'이 됩니다. <b>원본 시트는 자동으로 되돌리지 않으니</b> A 체크 해제 · 고객 줄 정리 · 월별 금액 정리를 직접 합니다.</td></tr>
       <tr><td><b>이용 종료 (짐 회수)</b></td><td>원본 시트 줄을 '사용만료' 아래로 옮기고 창고 줄을 비웁니다. 홈페이지 고객이면 관리자에게 알려 '이용종료'로 바꿉니다(안 바꾸면 고객 화면에 '기간만료'로 남고 아침 메일에 계속 나옵니다).</td></tr>
@@ -343,7 +352,8 @@ padding:8px 12px;border-radius:999px;text-decoration:none;box-shadow:0 1px 4px r
       <li>카드번호·유효기간 같은 결제 정보는 시트에 적지 않습니다. 이미 적힌 탭이 있으면 관리자와 정리합니다.</li>
       <li>기존 고객 연장 링크는 그 고객 번호로만 보냅니다(링크만 있으면 누구나 결제할 수 있습니다).</li>
       <li>원본 시트 머리글·열 위치·탭 이름을 바꾸기 전에는 관리자에게 먼저 알립니다.</li>
-      <li><b>솔라피 잔액</b>은 서버(자동 알림톡)와 매니저 발송 도구가 같이 씁니다. 0이 되면 양쪽 다 발송이 실패하니 <b>자동 충전을 켜 둔 채로</b> 둡니다.</li>
+      <li><span class="rib">업데이트</span><b>솔라피 잔액</b>은 서버(자동 알림톡)와 매니저 발송 도구가 <b>같이 씁니다.</b> 0원이 되면 양쪽 다 실패하니, 잔액 경고가 오면 바로 충전합니다(자동 충전은 쓰지 않음). 서버 키와 매니저 도구 키는 따로라 서로 영향이 없습니다.</li>
+      <li><span class="rib">업데이트</span>매니저 발송 도구가 결제현황 시트를 읽습니다. 결제현황 시트의 <b>열 이름 · 열 위치 · 지점 탭</b>이 바뀔 때는 관리자가 미리 알려 줍니다.</li>
     </ul>
   </div>
 </section>
@@ -364,12 +374,12 @@ padding:8px 12px;border-radius:999px;text-decoration:none;box-shadow:0 1px 4px r
     </div>
     <div class="stage">
       <span class="st now">지금</span>
-      <div><b>카카오 알림톡</b><span class="what">이용 신청 완료 · 연장 결제 완료 · 이용 종료 예정 안내를 카카오톡으로 자동 발송. 운영 중</span></div>
+      <div><span class="rib">업데이트</span><b>카카오 알림톡</b><span class="what">이용 신청 완료 · 연장 결제 완료 · 이용 종료 예정 안내를 홈페이지 결제 고객에게 카카오톡으로 자동 발송. 운영 중</span></div>
       <div class="less">메일을 안 보는 고객에게 따로 연락하기</div>
     </div>
     <div class="stage">
       <span class="st next">다음</span>
-      <div><b>기존 고객 연장 링크 자동 발송</b><span class="what">원본 시트에서 종료가 다가온 기존 고객을 골라 연장 링크를 자동으로 만들어 알림톡으로 발송. 월결제 기존 고객의 매달 결제요청은 매니저 발송 도구로 11/1부터 시작</span></div>
+      <div><span class="rib">업데이트</span><b>기존 고객 연장 링크 자동 발송</b><span class="what">지금: 월결제 기존 고객의 매달 결제요청은 매니저 발송 도구(솔라피 예약 발송)로 11/1부터 시작. 다음: 원본 시트에서 종료가 다가온 기존 고객을 골라 연장 링크를 자동으로 만들어 알림톡으로 발송</span></div>
       <div class="less">기존 고객 링크 만들기 · 보내기. 한 번 결제하면 홈페이지 고객(②)으로 넘어와 이후 전부 자동</div>
     </div>
     <div class="stage">
