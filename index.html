@@ -46,7 +46,9 @@ nav span.d { display: block; font-size: 13px; color: var(--muted); margin-top: 2
 nav .go { color: var(--muted); font-size: 18px; }
 .group { display: grid; gap: 10px; }
 .group h2 { margin: 6px 4px 0; font-size: 13px; font-weight: 700; color: var(--muted); letter-spacing: .4px; }
-.group h2 span { font-weight: 500; }
+.acct { margin: 0 4px 2px; padding: 9px 12px; border-radius: 12px; background: var(--yellow); color: #171716;
+        font-size: 13px; font-weight: 600; line-height: 1.5; }
+.acct b { font-weight: 800; word-break: break-all; }
 nav.sheets a { padding: 13px 16px; border-radius: 14px; grid-template-columns: 32px minmax(0, 1fr) 16px; }
 nav.sheets .ic { width: 32px; height: 32px; border-radius: 9px; }
 nav.sheets .ic svg { width: 18px; height: 18px; }
@@ -101,7 +103,8 @@ nav a { position: relative; }
   </nav>
 
   <section class="group" aria-label="시트 바로가기">
-    <h2>시트 바로가기 <span>· 권한 있는 계정으로 열림</span></h2>
+    <h2>시트 바로가기</h2>
+    <p class="acct">권한 있는 계정(<b>go@beyonds.kr</b>)으로 열림</p>
     <nav class="sheets">
     <a href="https://docs.google.com/spreadsheets/d/1PigjuF-j9FS1ol7jM7-KXcB4RcvdBix1EPNWKCfYRgA/edit#gid=338535844" target="_blank" rel="noopener">
       <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 10h16M4 15h16M10 4v16"/></svg></span>
