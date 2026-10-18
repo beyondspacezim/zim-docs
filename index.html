@@ -53,15 +53,7 @@ nav.sheets .ic svg { width: 18px; height: 18px; }
 nav.sheets b { font-size: 15px; }
 footer { text-align: center; font-size: 12px; color: var(--muted); line-height: 1.7; }
 .warn { color: var(--warn); font-weight: 700; }
-nav a { position: relative; }
-.bubble { position: absolute; top: -15px; right: 14px; z-index: 1; background: var(--yellow); color: #171716;
-          font-size: 12px; font-weight: 700; padding: 6px 11px; border-radius: 999px; white-space: nowrap;
-          box-shadow: 0 4px 12px rgba(0, 0, 0, .12); animation: bob 1.6s ease-in-out infinite; }
-.bubble::after { content: ""; position: absolute; left: 18px; bottom: -5px; width: 10px; height: 10px;
-                 background: var(--yellow); transform: rotate(45deg); border-radius: 2px; }
-@keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
-@media print { .bubble { display: none; } }
-@media (prefers-reduced-motion: reduce) { nav a { transition: none; } .bubble { animation: none; } }
+@media (prefers-reduced-motion: reduce) { nav a { transition: none; } }
 </style>
 </head>
 <body>
@@ -98,7 +90,6 @@ nav a { position: relative; }
       <span class="go" aria-hidden="true">›</span>
     </a>
     <a href="process.html">
-      <span class="bubble">민수대표님 확인해주세요</span>
       <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h10M4 17h7"/><path d="m15 15 2.5 2.5L21 13"/></svg></span>
       <span><b>창고 신청/결제 프로세스 개선 안내</b><span class="d">AS-IS / TO-BE · 자동 알림 · 진행 현황</span></span>
       <span class="go" aria-hidden="true">›</span>
