@@ -214,9 +214,9 @@ padding:8px 12px;border-radius:999px;text-decoration:none;box-shadow:0 1px 4px r
 
 <section id="ledger">
   <h2><span class="no">03</span>지점 원본 시트 관리 규칙</h2>
-  <p>서버가 원본 시트에 자동으로 쓰려면 시트 모양이 일정해야 합니다. 아래 규칙만 지키면 자동 기재가 계속 동작합니다. 지금 자동 기재는 <b>신내 1호점</b>에서 동작하고, 다른 지점은 시트를 연결하는 대로 같은 규칙이 적용됩니다.</p>
+  <p>서버가 원본 시트에 자동으로 쓰려면 시트 모양이 일정해야 합니다. 아래 규칙만 지키면 자동 기재가 계속 동작합니다. <span class="rib">업데이트</span>자동 기재는 <b>본사 운영 9개 지점 모두</b>에서 동작합니다. 모든 지점 원본 시트가 같은 규칙을 따라야 합니다.</p>
 
-  <h3>누가 어느 칸을 쓰나 (신내 1호점 기준)</h3>
+  <h3>누가 어느 칸을 쓰나 (예: 신내 1호점)</h3>
   <div class="tablebox"><table>
     <thead><tr><th>칸</th><th>내용</th><th>홈페이지 결제 고객</th><th>그 밖의 고객</th></tr></thead>
     <tbody>
@@ -260,7 +260,7 @@ padding:8px 12px;border-radius:999px;text-decoration:none;box-shadow:0 1px 4px r
         <ul>
           <li><b>매니저 할 일: 출입 방법 안내만.</b> 결제 완료 운영알림이 오면 비밀번호 등을 보냅니다.</li>
           <li>월별 금액·색은 정산 담당이 지금처럼 기재합니다.</li>
-          <li>원본 시트 기재가 아직 연결되지 않은 지점은 매니저가 원본 시트에 직접 적고 A열을 체크합니다. 체크 전까지 그 창고가 배치도에 '계약가능'으로 보이지만, 같은 창고 신규 신청은 서버가 막습니다.</li>
+          <li><span class="rib">업데이트</span>영등포구청역점 · 남양주점은 가맹점이라 홈페이지 결제 대상이 아닙니다. 지금처럼 직접 처리합니다.</li>
         </ul>
       </div>
     </div>
@@ -364,13 +364,8 @@ padding:8px 12px;border-radius:999px;text-decoration:none;box-shadow:0 1px 4px r
   <div class="road">
     <div class="stage">
       <span class="st now">지금</span>
-      <div><b>홈페이지 결제 + 장부 자동 기재</b><span class="what">신내 1호점 · 신대방점 홈페이지 결제, 신내 1호점 원본 시트 자동 기재, 알림 메일 (결제 완료 · 아침 운영알림 · 연장 안내 · 결제 취소)</span></div>
+      <div><span class="rib">업데이트</span><b>전 지점 홈페이지 결제 + 장부 자동 기재</b><span class="what">본사 운영 9개 지점 모두 홈페이지 결제 · 원본 시트 자동 기재 · 배치도 '사용중' 자동. 알림 메일 (결제 완료 · 아침 운영알림 · 연장 안내 · 결제 취소). 남양주점 · 영등포구청역점은 가맹점이라 본사 결제 대상이 아님</span></div>
       <div class="less">결제 링크 발송, 신규 고객 장부 입력, 배치도 체크, 홈페이지 고객 연장 안내</div>
-    </div>
-    <div class="stage">
-      <span class="st next">다음</span>
-      <div><b>모든 열린 지점에 장부 자동 기재</b><span class="what">신대방점부터 원본 시트 연결. 지점마다 시트 모양을 이 가이드 3장 규칙에 맞춰 두는 것이 전제</span></div>
-      <div class="less">지점별 신규 입력 · 배치도 체크</div>
     </div>
     <div class="stage">
       <span class="st now">지금</span>
@@ -381,11 +376,6 @@ padding:8px 12px;border-radius:999px;text-decoration:none;box-shadow:0 1px 4px r
       <span class="st next">다음</span>
       <div><span class="rib">업데이트</span><b>기존 고객 연장 링크 자동 발송</b><span class="what">지금: 월결제 기존 고객의 매달 결제요청은 매니저 발송 도구(솔라피 예약 발송)로 11/1부터 시작. 다음: 원본 시트에서 종료가 다가온 기존 고객을 골라 연장 링크를 자동으로 만들어 알림톡으로 발송</span></div>
       <div class="less">기존 고객 링크 만들기 · 보내기. 한 번 결제하면 홈페이지 고객(②)으로 넘어와 이후 전부 자동</div>
-    </div>
-    <div class="stage">
-      <span class="st later">이후</span>
-      <div><b>나머지 지점 오픈</b><span class="what">지점별 사이다페이 계정 등록 + 배치도 · 원본 시트 연결. 남양주점 · 영등포구청역점은 가맹점이라 본사 결제 대상이 아님</span></div>
-      <div class="less">전 지점 결제 링크 발송 · 장부 입력</div>
     </div>
     <div class="stage">
       <span class="st later">이후</span>

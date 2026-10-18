@@ -5,6 +5,7 @@ https://beyondspacezim.github.io/zim-docs/
 - `index.html` — 목록(메인) 페이지
 - `guide.html` — 매니저 운영가이드 (원본: `../운영가이드_창고매니저.html`)
 - `process.html` — 창고 신청/결제 프로세스 개선 안내 (원본: `../개편보고/홈페이지_신청결제_개편보고.html`)
+- `chatbot.html` — 챗봇 운영가이드 (원본: `../운영가이드_챗봇.html`)
 
 ## 업데이트
 

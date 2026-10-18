@@ -1,12 +1,13 @@
 """
 문서 사이트 만들기 — 원본 문서(프로젝트 폴더)를 이 저장소로 복사해 웹페이지로 감싼다.
 
-  python3 build.py        → guide.html · process.html · img/ 갱신
+  python3 build.py        → guide.html · process.html · chatbot.html · img/ 갱신
   그다음 git add -A && git commit && git push 하면 1~2분 뒤 사이트에 반영된다.
 
 원본은 고치는 곳 한 곳뿐:
   ../운영가이드_창고매니저.html          → guide.html   (매니저 운영가이드)
   ../개편보고/홈페이지_신청결제_개편보고.html → process.html (창고 신청/결제 프로세스 개선 안내)
+  ../운영가이드_챗봇.html                → chatbot.html (챗봇 운영가이드)
   ../개편보고/img/                       → img/
 """
 from pathlib import Path
@@ -17,6 +18,7 @@ SRC = HERE.parent
 PAGES = {
     "guide.html": SRC / "운영가이드_창고매니저.html",
     "process.html": SRC / "개편보고" / "홈페이지_신청결제_개편보고.html",
+    "chatbot.html": SRC / "운영가이드_챗봇.html",
 }
 HEAD = """<!doctype html>
 <html lang="ko">

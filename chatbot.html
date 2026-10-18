@@ -1,0 +1,477 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>미니창고짐 챗봇 운영 가이드</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* 레이아웃: 매니저 운영 가이드와 같은 틀(최대 860px). 장 번호는 찾아보기용 목차 */
+:root {
+  --bg: #f4f4f1;
+  --paper: #ffffff;
+  --ink: #171716;
+  --muted: #6a6a64;
+  --line: #e2e2dc;
+  --yellow: #ffd600;
+  --yellow-soft: #fff6c9;
+  --cell: #fff2cc;           /* 원본 시트 '사이다(홈피)' 칸 색 그대로 */
+  --ok: #2e6b39;
+  --ok-soft: #e6f2e7;
+  --warn: #9a4a0c;
+  --warn-soft: #fdf0e4;
+  --bad: #b3261e;
+  --bad-soft: #fce9e8;
+  --code: #efede6;
+  --font: "IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #151514; --paper: #1f1f1d; --ink: #f0f0eb; --muted: #a6a69e; --line: #35352f;
+    --yellow: #ffd600; --yellow-soft: #3a3410; --cell: #4a4220;
+    --ok: #8fd09a; --ok-soft: #1d3221; --warn: #f2ae7c; --warn-soft: #3a2517;
+    --bad: #f29b94; --bad-soft: #3b1f1d; --code: #2b2a26;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #151514; --paper: #1f1f1d; --ink: #f0f0eb; --muted: #a6a69e; --line: #35352f;
+  --yellow: #ffd600; --yellow-soft: #3a3410; --cell: #4a4220;
+  --ok: #8fd09a; --ok-soft: #1d3221; --warn: #f2ae7c; --warn-soft: #3a2517;
+  --bad: #f29b94; --bad-soft: #3b1f1d; --code: #2b2a26;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font); font-size: 15.5px; line-height: 1.72;
+       padding-inline: 16px; padding-block: 40px 90px; }
+.wrap { max-width: 860px; margin: 0 auto; display: grid; gap: 52px; }
+h1, h2, h3 { margin: 0; line-height: 1.3; text-wrap: balance; }
+h1 { font-size: 31px; letter-spacing: -0.6px; }
+h2 { font-size: 22px; display: flex; align-items: baseline; gap: 10px; }
+h2 .no { font-size: 13px; font-weight: 700; color: var(--muted); font-variant-numeric: tabular-nums; }
+h3 { font-size: 16.5px; }
+p { margin: 0; max-width: 68ch; }
+ul, ol { margin: 0; padding-left: 20px; display: grid; gap: 5px; }
+header { display: grid; gap: 14px; }
+.eyebrow { font-size: 12.5px; font-weight: 700; letter-spacing: 1.2px; color: var(--muted); }
+.lead { color: var(--muted); max-width: 64ch; }
+section { display: grid; gap: 16px; }
+.card { background: var(--paper); border: 1px solid var(--line); border-radius: 16px; padding: 22px; display: grid; gap: 12px; min-width: 0; }
+.muted { color: var(--muted); }
+.small { font-size: 13.5px; }
+code, .mono { font-family: var(--mono); font-size: .86em; background: var(--code); border-radius: 5px; padding: 1px 6px; }
+.cellchip { display: inline-block; background: var(--cell); border: 1px solid #e6d59f; border-radius: 4px; padding: 0 7px; font-weight: 700; font-size: .92em; color: var(--ink); }
+
+/* 목차 */
+.toc { display: flex; flex-wrap: wrap; gap: 6px 8px; }
+.toc a { font-size: 13.5px; text-decoration: none; color: var(--ink); background: var(--paper); border: 1px solid var(--line);
+         border-radius: 999px; padding: 4px 12px; }
+.toc a:hover, .toc a:focus-visible { border-color: var(--ink); outline: none; }
+
+/* 하루 루틴 */
+.routine { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; counter-reset: r; }
+.routine li { counter-increment: r; display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 14px; align-items: start;
+              background: var(--paper); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; }
+.routine li::before { content: counter(r); width: 30px; height: 30px; border-radius: 50%; background: var(--yellow); color: #171716;
+                      font-weight: 700; display: flex; align-items: center; justify-content: center; }
+.routine .when { font-size: 12.5px; font-weight: 700; color: var(--muted); letter-spacing: .4px; }
+.routine b { font-size: 15.5px; }
+.routine span.d { display: block; font-size: 14px; color: var(--muted); margin-top: 2px; }
+
+/* 표 */
+.tablebox { overflow-x: auto; background: var(--paper); border: 1px solid var(--line); border-radius: 14px; }
+table { width: 100%; border-collapse: collapse; font-size: 14.5px; min-width: 600px; }
+th, td { text-align: left; padding: 11px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-size: 12.5px; letter-spacing: .5px; color: var(--muted); font-weight: 700; }
+tbody tr:last-child td { border-bottom: 0; }
+td.k { font-weight: 700; white-space: nowrap; }
+.tag { display: inline-block; font-size: 12px; font-weight: 700; padding: 2px 9px; border-radius: 999px; white-space: nowrap; }
+.tag.auto { background: var(--ok-soft); color: var(--ok); }
+.tag.me { background: var(--warn-soft); color: var(--warn); }
+.tag.admin { background: var(--code); color: var(--muted); }
+.tag.no { background: var(--bad-soft); color: var(--bad); }
+
+/* 시트 3종 */
+.sheets { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+.sheets .card { gap: 8px; align-content: start; }
+.sheets .role { font-size: 12.5px; font-weight: 700; color: var(--muted); }
+.sheets h3 { font-size: 16px; }
+.sheets p { font-size: 14px; color: var(--muted); }
+
+/* 고객 유형 */
+.types { display: grid; gap: 12px; }
+.type { display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 18px; background: var(--paper); border: 1px solid var(--line);
+        border-radius: 16px; padding: 20px 22px; }
+@media (max-width: 640px) { .type { grid-template-columns: 1fr; gap: 10px; } }
+.type .who { display: grid; gap: 6px; align-content: start; }
+.type .who b { font-size: 16.5px; }
+.type .who span { font-size: 13px; color: var(--muted); }
+.type .body { display: grid; gap: 8px; min-width: 0; font-size: 14.5px; }
+.flow { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 13.5px; }
+.flow span { background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 3px 10px; }
+.flow i { font-style: normal; color: var(--muted); }
+
+/* 안내 상자 */
+.note { border-radius: 12px; padding: 13px 16px; display: grid; gap: 4px; font-size: 14.5px; }
+.note.warn { background: var(--warn-soft); }
+.note.warn strong { color: var(--warn); }
+.note.bad { background: var(--bad-soft); }
+.note.bad strong { color: var(--bad); }
+.note.ok { background: var(--ok-soft); }
+.note.ok strong { color: var(--ok); }
+
+/* 자동화 로드맵 */
+.road { display: grid; gap: 10px; }
+.stage { display: grid; grid-template-columns: 92px minmax(0, 1fr) minmax(0, 1fr); gap: 16px; background: var(--paper);
+         border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; align-items: start; }
+@media (max-width: 680px) { .stage { grid-template-columns: 1fr; gap: 6px; } }
+.stage .st { font-size: 12.5px; font-weight: 700; }
+.stage .st.now { color: var(--ok); }
+.stage .st.next { color: var(--warn); }
+.stage .st.later { color: var(--muted); }
+.stage b { display: block; font-size: 15px; }
+.stage .what { font-size: 14px; color: var(--muted); }
+.stage .less { font-size: 14px; }
+.stage .less::before { content: "줄어드는 일 "; font-size: 12px; font-weight: 700; color: var(--ok); margin-right: 4px; }
+
+footer { color: var(--muted); font-size: 13px; border-top: 1px solid var(--line); padding-top: 16px; }
+
+/* 10/15~16 업데이트 표시 (오렌지 리본) */
+.rib { display: inline-block; vertical-align: 1px; margin-right: 6px; padding: 0 10px 0 7px; font-size: 11px; font-weight: 700;
+       line-height: 1.7; letter-spacing: .3px; color: #fff; background: #f76707; white-space: nowrap;
+       clip-path: polygon(0 0, 100% 0, calc(100% - 5px) 50%, 100% 100%, 0 100%);
+       -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+@media print {
+  @page { size: A4; margin: 14mm 12mm; }
+  :root { --bg: #ffffff; }
+  body { padding-block: 0; font-size: 13px; }
+  .wrap, section, .types, .road, .routine { display: block; }
+  .wrap > * + * { margin-top: 26px; }
+  section > * + *, .types > * + *, .road > * + *, .routine > * + * { margin-top: 10px; }
+  .card, .type, .stage, .routine li, tr, .note { break-inside: avoid; }
+  h2 { break-after: avoid; }
+  .toc, .wrap > footer { display: none; }
+  .tablebox { overflow: visible; }
+  table { min-width: 0; }
+}
+</style>
+</head>
+<body>
+<a href="./" style="position:fixed;top:calc(env(safe-area-inset-top,0px) + 12px);left:12px;z-index:10;
+font:600 13px/1 'IBM Plex Sans KR','Apple SD Gothic Neo',sans-serif;color:#171716;background:#ffd600;
+padding:8px 12px;border-radius:999px;text-decoration:none;box-shadow:0 1px 4px rgba(0,0,0,.15)" class="no-print">← 목록</a>
+<style>@media print{.no-print{display:none!important}}</style>
+
+
+<div class="wrap">
+
+<header>
+  <span class="eyebrow">미니창고짐 · 챗봇 운영</span>
+  <h1>미니창고짐 챗봇 운영 가이드</h1>
+  <p class="lead">홈페이지의 <b>미니창고짐 AI 매니저</b>는 <b>챗봇 데이터 시트</b>를 읽고 답합니다. 답변 · 퀵칩 · 지점 정보 · 창고 현황은 시트만 고치면 <b>1~2분 뒤</b> 챗봇에 반영됩니다. 이 문서는 시트로 직접 할 수 있는 일과 <b>개발자에게 문의</b>할 일을 나눠 정리했습니다.</p>
+  <nav class="toc" aria-label="목차">
+    <a href="#overview">챗봇 한눈에</a><a href="#tabs">시트 탭별 역할</a><a href="#faq">질문답변(FAQ)</a>
+    <a href="#chips">첫 화면 퀵칩</a><a href="#branches">지점 정보</a><a href="#inventory">창고 현황</a>
+    <a href="#consult">상담 연결</a><a href="#mails">알림 메일</a><a href="#logs">기록 읽는 법</a>
+    <a href="#widget">챗봇 버튼</a><a href="#cases">이럴 땐</a><a href="#rules">지켜야 할 것</a><a href="#dev">개발자에게 문의</a>
+  </nav>
+</header>
+
+<section id="overview">
+  <h2><span class="no">01</span>챗봇 한눈에</h2>
+  <div class="card">
+    <ul>
+      <li>이름은 <b>미니창고짐 AI 매니저</b>. 홈페이지(zimzim.kr) 모든 페이지 오른쪽 아래 버튼으로 열립니다.</li>
+      <li>하는 일: 빈자리 확인 · 가까운 지점 찾기 · <b>3D 짐 적재 시뮬레이션</b>(사진으로 물품 인식 포함) · 프로모션 안내 · FAQ 답변 · <b>카카오톡 상담 연결</b> · 빈자리 알림 신청 접수 · 관리자 요청 접수</li>
+      <li>AI 답변은 24시간입니다. <b>사람 상담(카카오톡)은 평일 10~18시</b>입니다.</li>
+      <li>대화는 고객 브라우저 탭에만 남고, 탭을 닫으면 사라집니다(로그인 없음). 운영 기록은 시트에 남습니다.</li>
+    </ul>
+    <div class="flow"><span>챗봇 데이터 시트 고치기</span><i>→</i><span>1~2분</span><i>→</i><span>챗봇 답변에 반영</span></div>
+  </div>
+  <div class="tablebox"><table>
+    <thead><tr><th>구분</th><th>무엇</th></tr></thead>
+    <tbody>
+      <tr><td class="k"><span class="tag me">시트만 고치면 됨</span></td><td>FAQ · 첫 화면 퀵칩 · 지점 정보(주소 · 링크 · 프로모션 · 유도 문구 · 이용 안내 · 결제 방식) · 창고 현황 · 3D 품목 목록. 1~2분 뒤 반영</td></tr>
+      <tr><td class="k"><span class="tag admin">개발자에게 문의</span></td><td>챗봇 버튼 · 화면 · 새 기능, 카카오톡 상담 링크, 알림 메일 받는 사람, 탭 이름 · 새 열 · 새 탭, 오류 점검 (<a href="#dev">13장</a>)</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="tabs">
+  <h2><span class="no">02</span>챗봇 데이터 시트 — 탭별 역할</h2>
+  <p>메인 페이지 '구글시트 바로가기'의 <b>챗봇 데이터 시트</b>로 엽니다(권한 있는 계정으로 열림).</p>
+  <div class="tablebox"><table>
+    <thead><tr><th>탭</th><th>담기는 것</th><th>누가</th></tr></thead>
+    <tbody>
+      <tr><td class="k"><code>지점_List</code></td><td>지점 11곳 정보 (<a href="#branches">05장</a>)</td><td><span class="tag me">직접</span></td></tr>
+      <tr><td class="k"><code>창고_Inventory</code></td><td>창고별 계약 여부 · 사이즈 · 종료 예정일 · 월 이용료 (<a href="#inventory">06장</a>)</td><td><span class="tag auto">자동</span> <span class="tag me">직접</span></td></tr>
+      <tr><td class="k"><code>품목_프리셋</code></td><td>3D 시뮬레이션에서 고르는 물품 목록</td><td><span class="tag me">직접</span></td></tr>
+      <tr><td class="k"><code>질문답변_데이터</code></td><td>FAQ (<a href="#faq">03장</a>)</td><td><span class="tag me">직접</span></td></tr>
+      <tr><td class="k"><code>고정_키워드질문</code></td><td>첫 화면 퀵칩 (<a href="#chips">04장</a>)</td><td><span class="tag me">직접</span></td></tr>
+      <tr><td class="k"><code>대화_로그</code></td><td>고객 질문 · AI 답변 · 함께 보여 준 버튼</td><td><span class="tag auto">자동 기록</span></td></tr>
+      <tr><td class="k"><code>상담요약(카톡연결시)</code></td><td>상담 코드 · 이름 · 대화 요약 (<a href="#consult">07장</a>)</td><td><span class="tag auto">자동 기록</span></td></tr>
+      <tr><td class="k"><code>요청_접수</code></td><td>채팅 중 남긴 관리자 요청 (예: 출입카드 추가 발급)</td><td><span class="tag auto">자동 기록</span></td></tr>
+      <tr><td class="k"><code>알림신청</code></td><td>빈자리 알림 · 오픈 알림 연락처</td><td><span class="tag auto">자동 기록</span></td></tr>
+      <tr><td class="k"><code>이벤트_로그</code></td><td>바로가기 클릭 등</td><td><span class="tag auto">자동 기록</span></td></tr>
+      <tr><td class="k"><code>3D_시뮬레이션</code></td><td>3D 실행 기록 (<a href="#logs">09장</a>)</td><td><span class="tag auto">자동 기록</span></td></tr>
+      <tr><td class="k"><code>AI챗봇 상담품질 피드백</code></td><td>상담 종료 때 남긴 별점 · 의견</td><td><span class="tag auto">자동 기록</span></td></tr>
+    </tbody>
+  </table></div>
+  <ul>
+    <li><b>자동 기록 탭은 고치지 않습니다.</b> 최신 기록이 <b>맨 위(2행)</b>에 쌓입니다. 피드백 탭만 아래로 쌓입니다.</li>
+    <li><b>개인정보 자동 파기:</b> <code>대화_로그</code> · <code>상담요약(카톡연결시)</code> · <code>알림신청</code> · <code>요청_접수</code> · <code>3D_시뮬레이션</code>은 <b>90일이 지난 행이 매일 자동으로 지워집니다.</b></li>
+  </ul>
+</section>
+
+<section id="faq">
+  <h2><span class="no">03</span>질문답변(FAQ) 관리 — <code>질문답변_데이터</code></h2>
+  <p>열: <b>A 질문 · B 답변 · C 버튼 · D 관리자메모</b> (D열은 챗봇이 읽지 않습니다)</p>
+  <div class="card">
+    <ul>
+      <li><b>질문과 답변이 둘 다 있는 행만</b> 챗봇이 읽습니다. 답변이 빈 행은 쓰이지 않습니다.</li>
+      <li>고객 질문이 FAQ와 <b>비슷하면</b> AI가 그 답변을 바탕으로 답합니다. 문구는 AI가 조금 다듬을 수 있습니다.</li>
+      <li>답변에 <code>**굵게**</code>를 쓸 수 있습니다. 이모지는 1~2개만 씁니다.</li>
+      <li>줄바꿈이 있는 답변은 <b>셀을 더블클릭해 편집 상태에서</b> 붙여 넣습니다. 그냥 붙여 넣으면 여러 행으로 쪼개집니다.</li>
+      <li>샘플 · 예시 문구도 <b>챗봇이 사실로 안내합니다.</b> 실제 규정과 맞는 내용만 넣습니다.</li>
+    </ul>
+  </div>
+
+  <h3>버튼 칸(C열) 쓰는 법</h3>
+  <div class="tablebox"><table>
+    <thead><tr><th>쓰는 법</th><th>예</th></tr></thead>
+    <tbody>
+      <tr><td class="k">버튼 하나</td><td><code>버튼 이름 | 링크주소</code></td></tr>
+      <tr><td class="k">여러 개 (최대 3개)</td><td><code>버튼1 | 링크1 ; 버튼2 | 링크2</code> — 세미콜론으로 나눕니다</td></tr>
+      <tr><td class="k">카카오톡 상담 연결</td><td><code>카카오톡 상담 | 상담연결</code></td></tr>
+    </tbody>
+  </table></div>
+  <ul>
+    <li>링크는 <code>https://</code>로 시작해야 버튼이 됩니다.</li>
+    <li><code>|</code>가 빠진 버튼(예: <code>카카오톡 상담</code>만 적음)은 <b>제대로 동작하지 않습니다.</b></li>
+    <li>자주 쓰는 링크: 마이페이지 <code>https://zimzim.kr/shop_mypage</code> · 회원가입 · 로그인 <code>https://zimzim.kr/login</code> · 투어 신청 <code>https://zimzim.kr/tour</code></li>
+  </ul>
+
+  <div class="note warn"><strong>⚠ 피해야 할 문구 — 카카오 버튼이 저절로 붙습니다</strong>
+    <span>답변 한 문장 안에 <b>매니저 · 담당자 · 상담원 · 상담사</b>와 <b>연락 · 문의 · 연결 · 도움 · 도와</b>가 가까이 있으면, 챗봇이 연락 수단이 필요하다고 보고 <b>카카오톡 상담 버튼을 자동으로</b> 붙입니다. 마이페이지처럼 고객이 직접 하는 일을 안내하면서 "담당자가 연락드려요"라고 쓰면 버튼이 엉뚱하게 두 개 뜹니다.</span>
+    <span>대신 이렇게 씁니다: "아래 버튼으로 신청해 주시면 순서대로 안내해 드려요" · "카카오톡 상담으로 남겨 주세요". <code>대표</code>, <code>상담</code>(단독)은 해당하지 않습니다.</span>
+  </div>
+
+  <h3>고정 답변 — 창업 · 가맹 문의</h3>
+  <div class="card">
+    <ul>
+      <li>질문(A열)에 <b><code>창업</code></b>이 들어간 행은 AI를 거치지 않고 <b>답변 · 버튼을 시트 문구 그대로</b> 보여 줍니다.</li>
+      <li>어떤 질문을 창업 문의로 볼지는 <b>그 행 A열 괄호 안 단어들</b>로 정합니다. 예) <code>창업 문의 (가맹 · 프랜차이즈 · 가맹점 개설 · 점포 개설 · 창업 비용 · 가맹비 · …)</code>
+        <ul>
+          <li>단어는 <b>가운뎃점(·)이나 쉼표</b>로 나눕니다. <code>점포 개설</code>처럼 띄어 쓴 말은 한 덩어리로 봅니다.</li>
+          <li>일반 문의에도 흔한 단어는 <b>혼자 넣지 않습니다.</b> 예) <code>지점</code> ✗ → <code>지점 개설</code> ✓</li>
+          <li>창업 질문이 아닌데 창업 답변이 나오면 그 단어를 A열에서 뺍니다.</li>
+        </ul>
+      </li>
+      <li><code>창업</code>이 들어간 질문 행은 <b>하나만</b> 둡니다. 이 행을 지우면 창업 질문도 평소처럼 AI가 답합니다.</li>
+    </ul>
+  </div>
+
+  <div class="note ok"><strong>결제 개편 관련 FAQ는 구조를 유지합니다</strong>
+    <span>연장 · 이용 기간 · 결제 수단 등은 <b>"홈페이지에서 결제하신 고객님 / 홈페이지 결제 이전부터 이용 중인 고객님"</b>으로 나눠 안내하고, 끝에 <b>영등포구청역점 · 남양주점 예외 줄</b>과 카카오 버튼을 붙여 두었습니다. 문구를 고칠 때도 이 구조를 지킵니다.</span>
+  </div>
+</section>
+
+<section id="chips">
+  <h2><span class="no">04</span>첫 화면 퀵칩 — <code>고정_키워드질문</code></h2>
+  <p>열: <b>A 사용여부(체크박스) · B 키워드 · C 내용</b></p>
+  <div class="card">
+    <ul>
+      <li>체크한 행만 첫 화면 버튼으로 보입니다.</li>
+      <li><b>예약 키워드 4개</b>는 내용 칸과 상관없이 정해진 화면을 엽니다. 켜고 끄기만 할 수 있습니다.<br>
+        <span class="cellchip">빈자리 확인</span> <span class="cellchip">가까운 창고 찾기</span> <span class="cellchip">내 짐이 들어갈까? (3D 시뮬레이션)</span> <span class="cellchip">프로모션 확인</span></li>
+      <li>그 밖의 키워드는 누르면 <b>내용 칸 문구가 AI 없이 그대로</b> 답변으로 나옵니다. 그래서 질문이 아니라 <b>완성된 답변 문장</b>으로 씁니다.</li>
+      <li>탭이 비면 기본 퀵칩이 대신 나옵니다.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="branches">
+  <h2><span class="no">05</span>지점 정보 — <code>지점_List</code></h2>
+  <div class="tablebox"><table>
+    <thead><tr><th>열</th><th>이름</th><th>규칙</th></tr></thead>
+    <tbody>
+      <tr><td class="k">A</td><td>지점명</td><td><code>창고_Inventory</code>의 지점명과 <b>글자까지 같아야</b> 합니다</td></tr>
+      <tr><td class="k">B</td><td>주소</td><td>지역 묶음 · 가까운 지점 찾기에 쓰입니다</td></tr>
+      <tr><td class="k">C</td><td>아임웹 상세 URL</td><td>바로가기 버튼 링크. <b>지점 페이지 주소와 정확히 같아야</b> 그 페이지에서 유도 말풍선이 뜹니다</td></tr>
+      <tr><td class="k">D</td><td>지번주소</td><td>동 이름 검색용</td></tr>
+      <tr><td class="k">E</td><td>프로모션 내용</td><td>예) <code>12개월 패키지 50% 할인, 6개월 패키지 20%할인</code> → 버튼에 가장 큰 %가 <code>[50%할인]</code>으로 표시됩니다</td></tr>
+      <tr><td class="k">F</td><td>챗봇 유도 문구</td><td>지점 페이지 말풍선 문구 (선택)</td></tr>
+      <tr><td class="k">G</td><td>주차 안내</td><td>비워 두면 챗봇이 추측하지 않고 카카오 상담으로 연결합니다</td></tr>
+      <tr><td class="k">H</td><td>화장실 안내</td><td>〃</td></tr>
+      <tr><td class="k">I</td><td>창고 잠금장치</td><td><code>버튼식 도어락</code> · <code>다이얼 캐비넷</code> · <code>키패드 캐비넷</code> 중 <b>이름만</b>. 설정 방법은 FAQ의 같은 이름 행(예: <code>(버튼식 도어락)</code>)이 맡습니다</td></tr>
+      <tr><td class="k">J</td><td>기타 이용 안내</td><td>선택</td></tr>
+      <tr><td class="k">K</td><td>결제 방식</td><td><span class="cellchip">홈페이지 결제</span> 또는 <span class="cellchip">개별 운영</span> — <b>띄어쓰기까지 정확히</b></td></tr>
+    </tbody>
+  </table></div>
+  <ul>
+    <li><b>A~F열은 순서를 바꾸면 안 됩니다.</b> G~K열은 머리글 이름으로 찾으니 순서는 달라도 되지만, <b>머리글 글자는 그대로</b> 둡니다.</li>
+  </ul>
+
+  <h3>결제 방식(K열)에 따라 달라지는 것</h3>
+  <div class="tablebox"><table>
+    <thead><tr><th>값</th><th>지점</th><th>챗봇 동작</th></tr></thead>
+    <tbody>
+      <tr><td class="k"><span class="cellchip">홈페이지 결제</span></td><td>본사 운영 9개 지점</td><td>버튼이 <code>○○점 신청·결제하기</code>. 연장 · 이용 기간 질문은 마이페이지로 안내</td></tr>
+      <tr><td class="k"><span class="cellchip">개별 운영</span></td><td>영등포구청역점 · 남양주점 (임대인 관리)</td><td>버튼이 <code>○○점 바로가기</code>. 결제 · 연장 · 마이페이지 질문은 <b>카카오 상담으로 연결</b></td></tr>
+      <tr><td class="k">빈칸</td><td>—</td><td>개편 전처럼 <code>바로가기</code>로 동작</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>유도 말풍선</h3>
+  <p>지점 페이지에서 10초 뒤 챗봇 버튼 옆에 한 번 뜹니다. 어떤 문구가 뜰지는 아래 순서로 정해집니다. F열을 비워도 자동 문구가 나옵니다.</p>
+  <div class="flow"><span>① 만실 → 빈자리 알림 유도</span><i>→</i><span>② 빈자리 1~3개 → "🔥 딱 N자리 남았어요"</span><i>→</i><span>③ 그 밖 → 프로모션 · 3D · F열 문구 중 하나</span></div>
+</section>
+
+<section id="inventory">
+  <h2><span class="no">06</span>창고 현황 — <code>창고_Inventory</code></h2>
+  <p>열: <b>지점명 · 계약여부(체크 = 계약 중) · 창고번호 · 사이즈</b> <code>가로 x 세로 x 높이</code>(m, 예 <code>1.0 x 1.0 x 2.2</code>) <b>· 이용종료예정일</b>(날짜 · <code>모름</code> · 빈칸) <b>· 월 이용료 · 프로모션 내용</b></p>
+  <div class="tablebox"><table>
+    <thead><tr><th>지점</th><th>언제 바뀌나</th><th>누가</th></tr></thead>
+    <tbody>
+      <tr><td class="k">본사 운영 9개 지점</td><td>홈페이지 결제가 끝나면 자동으로 바뀝니다</td><td><span class="tag auto">자동</span></td></tr>
+      <tr><td class="k">본사 운영 9개 지점</td><td>이용 종료 · 해지 · 기간 변경은 <b>자동으로 바뀌지 않습니다.</b> 매니저가 원본 시트를 정리할 때 이 탭의 계약여부 · 종료 예정일도 같이 고칩니다</td><td><span class="tag me">매니저</span></td></tr>
+      <tr><td class="k">영등포구청역점 · 남양주점</td><td>모두 직접 고칩니다</td><td><span class="tag me">매니저</span></td></tr>
+    </tbody>
+  </table></div>
+  <ul>
+    <li>챗봇의 빈자리 안내는 시트보다 <b>최대 1~2분</b> 늦을 수 있습니다.</li>
+    <li>만실이면 챗봇이 <b>종료 예정일이 가장 빠른 창고</b>를 안내합니다. 종료 예정일이 비었거나 <code>모름</code>이면 "예정일 미정"으로 상담을 권합니다.</li>
+    <li><b>사이즈 글자(창고번호 앞 글자, 예 <code>F1</code> → F)의 뜻은 지점마다 다릅니다.</b> 같은 D라도 지점마다 치수가 다르니, 챗봇은 치수를 같이 안내합니다. 매니저도 고객에게 <b>치수로</b> 안내합니다.</li>
+  </ul>
+</section>
+
+<section id="consult">
+  <h2><span class="no">07</span>상담 연결과 상담 코드</h2>
+  <div class="flow"><span>상담 버튼</span><i>→</i><span>고객 발화 3회 미만: 바로 카카오톡 채널</span></div>
+  <div class="flow"><span>상담 버튼</span><i>→</i><span>3회 이상: "대화를 상담원에게 전달할까요?"</span><i>→</i><span>이름 입력</span><i>→</i><span>상담 코드 발급 (예: <code>홍길동182</code>)</span></div>
+  <div class="card">
+    <ul>
+      <li>상담 코드는 <b>이름 + 숫자 3자리</b>입니다.</li>
+      <li>고객이 <b>카카오톡에서 상담 코드를 말하면</b> <code>상담요약(카톡연결시)</code> 탭에서 그 코드를 찾아 <b>대화 요약</b>을 봅니다. 처음부터 다시 묻지 않아도 됩니다. 같은 내용이 알림 메일로도 옵니다.</li>
+      <li>운영시간(평일 10~18시) 밖에는 상담 버튼 위와 상담 창에 "지금은 상담원 운영시간이 아니에요. 지금 연결하시면 AI가 먼저 접수하고, 다음 영업일에 상담원이 답변드려요." 안내가 붙습니다. <b>공휴일은 구분하지 못합니다.</b></li>
+      <li>챗봇 버튼 문구는 운영시간엔 <code>24시간 빠른 상담</code>, 그 밖엔 <code>24시간 AI 상담</code>입니다.</li>
+      <li>챗봇은 <b>전화번호를 안내하지 않습니다</b>(전화 상담 창구 없음). 상담은 카카오톡으로만 받습니다.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="mails">
+  <h2><span class="no">08</span>알림 메일</h2>
+  <div class="tablebox"><table>
+    <thead><tr><th>메일</th><th>언제</th><th>제목 예</th><th>본문</th></tr></thead>
+    <tbody>
+      <tr><td class="k">새 상담 요청</td><td>상담 코드가 발급될 때</td><td><code>[공유창고 챗봇] 새 상담 요청 — 홍길동182</code></td><td>상담 코드 · 이름 · 대화 요약</td></tr>
+      <tr><td class="k">고객 요청 접수</td><td>채팅 중 이름 · 연락처를 남긴 요청</td><td><code>[공유창고 챗봇] 고객 요청 접수 — 출입카드 재발급</code></td><td>요청 내용 · 이름 · 연락처</td></tr>
+      <tr><td class="k">알림 신청 접수</td><td>빈자리 · 오픈 알림 등록</td><td><code>[공유창고 챗봇] 빈자리알림 접수 — 신내1호점</code></td><td>구분 · 관심 지역 · 연락처</td></tr>
+    </tbody>
+  </table></div>
+  <ul>
+    <li>받는 사람: <b>beyondspace.zim@gmail.com · go@beyonds.kr</b>. 바꾸려면 개발자에게 문의합니다.</li>
+    <li><b>하루 약 50건이 상한</b>입니다. 넘으면 그날 남은 메일만 가지 않고 <b>시트에는 계속 쌓입니다.</b></li>
+    <li>메일이 안 와도 접수는 시트에 남습니다. <b>메일보다 시트가 원본</b>입니다.</li>
+    <li>메일에 연락처가 들어 있습니다. 시트는 90일 뒤 자동으로 지워지지만 <b>받은편지함은 직접 정리</b>합니다.</li>
+    <li><code>요청_접수</code>는 출입카드 전용이 아닙니다. FAQ가 "성함 · 연락처를 남겨 주세요"라고 안내한 주제면 무엇이든 들어옵니다.</li>
+  </ul>
+</section>
+
+<section id="logs">
+  <h2><span class="no">09</span>기록 읽는 법</h2>
+  <div class="tablebox"><table>
+    <thead><tr><th>탭</th><th>무엇이 남나</th><th>이렇게 봅니다</th></tr></thead>
+    <tbody>
+      <tr><td class="k"><code>대화_로그</code></td><td>세션ID · 일시 · 고객 질문 · AI 답변 · <b>안내 버튼</b>(그 답변과 함께 보여 준 버튼, 예 <code>카카오톡 상담 연결 / 구로점 바로가기</code>, <code>[카드: avail]</code>)</td><td>상담 안내 버튼이 제대로 붙었는지 '안내 버튼' 열로 확인합니다</td></tr>
+      <tr><td class="k"><code>이벤트_로그</code></td><td><code>reserve_click</code> 바로가기 · 신청 버튼 클릭 (상세 = <code>버튼 이름 | 세션ID</code>) · <code>lead_registered</code> 알림 신청 · <code>consult_code_issued</code> 상담 코드 발급</td><td>버튼 이름으로 클릭 수를 셀 수 있습니다 (예: 창업 상담 신청 클릭 수)</td></tr>
+      <tr><td class="k"><code>3D_시뮬레이션</code></td><td>일시 · 세션ID · 진입 경로(<code>퀵칩</code> · <code>플로팅 버튼</code> · <code>자유 채팅</code> · <code>지점 티저</code> · <code>AI 버튼</code>) · 지점 · 창고 사이즈 · 물품 · 물품 종류 수 · 총 부피 · 적재율 · 결과(<code>들어감</code> · <code>안 들어감</code>) · 입력 방식(<code>직접입력 n / 프리셋 n / 사진 n</code>)</td><td>아래 주의를 보고 읽습니다</td></tr>
+      <tr><td class="k"><code>AI챗봇 상담품질 피드백</code></td><td>상담 종료 때 별점(1~5) · 의견</td><td>낮은 별점의 의견부터 봅니다</td></tr>
+    </tbody>
+  </table></div>
+  <div class="note warn"><strong>3D 기록 읽을 때 주의</strong>
+    <span><b>총 부피는 입력한 물건 전체, 적재율은 실제로 넣은 물건만</b> 기준입니다. "적재율 6%인데 안 들어감"은 오류가 아니라 <b>긴 물건이 창고 최대 길이를 넘어 아예 못 들어간 것</b>입니다(예: 320cm 걸이대 vs 220cm 창고). 고객 화면에는 이유와 들어가는 다른 지점이 함께 안내됩니다. 입력 방식이 <b>사진</b>이면 AI가 치수를 추정한 것이라 크게 잡혔을 수 있습니다.</span>
+  </div>
+  <p class="small muted">세션ID로 대화 · 이벤트 · 3D 탭을 이으면 "들어옴 → 질문 → 3D → 신청 클릭" 흐름을 볼 수 있습니다.</p>
+</section>
+
+<section id="widget">
+  <h2><span class="no">10</span>홈페이지의 챗봇 버튼</h2>
+  <p>챗봇 버튼은 아임웹 페이지마다 넣어 두었고, <b>넣고 바꾸는 일은 개발자가 합니다.</b> 매니저는 아래처럼 보이는지만 확인하고, 다르면 개발자에게 알립니다.</p>
+  <div class="tablebox"><table>
+    <thead><tr><th>페이지</th><th>보이는 모습</th></tr></thead>
+    <tbody>
+      <tr><td class="k">메인</td><td>첫 화면을 지나 아래로 내리면 버튼이 나타납니다</td></tr>
+      <tr><td class="k">투어 · 지점 상세</td><td>처음부터 오른쪽 아래에 버튼</td></tr>
+      <tr><td class="k">지점 찾기</td><td>지점 찾기에 맞춘 버튼</td></tr>
+      <tr><td class="k">그 밖의 페이지</td><td>오른쪽 아래에 기본 버튼</td></tr>
+    </tbody>
+  </table></div>
+  <p class="small muted">개발자에게 알릴 때: 메인에서 버튼이 늦게 뜨거나 바로 뜸(아임웹 섹션을 새로 만들면 생길 수 있음) · 휴대폰에서 버튼이 하단 고정 바와 겹침 · 버튼이 아예 안 보임.</p>
+</section>
+
+<section id="cases">
+  <h2><span class="no">11</span>이럴 땐</h2>
+  <div class="tablebox"><table>
+    <thead><tr><th>상황</th><th>할 일</th></tr></thead>
+    <tbody>
+      <tr><td><b>시트를 고쳤는데 챗봇이 그대로</b></td><td><b>1~2분</b> 기다린 뒤 <b>시크릿 창</b>에서 확인합니다.</td></tr>
+      <tr><td><b>챗봇 화면이 바뀌었다는데 예전 화면이 보임</b></td><td>브라우저가 <b>10분</b> 동안 예전 화면을 씁니다. 시크릿 창으로 확인합니다.</td></tr>
+      <tr><td><b>FAQ 버튼이 안 뜸</b></td><td>C열이 <code>이름 | 링크</code> 형식인지, 링크가 <code>https://</code>로 시작하는지 확인합니다.</td></tr>
+      <tr><td><b>버튼이 엉뚱하게 카카오까지 두 개 뜸</b></td><td>답변에 "담당자 · 매니저 + 연락 · 문의" 문구가 있는지 보고 고칩니다 (<a href="#faq">03장</a>).</td></tr>
+      <tr><td><b>일반 질문에 창업 답변이 나옴</b></td><td>창업 행 A열 괄호에서 원인 단어를 뺍니다.</td></tr>
+      <tr><td><b>특정 지점 주차 · 화장실을 물으면 상담 버튼만 뜸</b></td><td>그 지점 <code>지점_List</code> G~I열이 비어 있습니다. 채웁니다.</td></tr>
+      <tr><td><b>영등포구청역점 · 남양주점 빈자리가 실제와 다름</b></td><td><code>창고_Inventory</code>를 직접 고칩니다 (자동으로 바뀌지 않는 지점).</td></tr>
+      <tr><td><b>고객이 나갔는데 챗봇이 아직 계약 중으로 안내</b></td><td><code>창고_Inventory</code>의 계약여부 · 종료 예정일을 고칩니다 (이용 종료 · 해지는 자동이 아님).</td></tr>
+      <tr><td><b>퀵칩 · 첫 화면이 아예 안 뜸</b></td><td>최근 셀 하나에 아주 긴 글을 넣었는지 보고 줄입니다. 그래도 안 되면 개발자에게 알립니다.</td></tr>
+      <tr><td><b>알림 메일이 안 옴</b></td><td>해당 탭에 행이 쌓였는지 먼저 봅니다. 쌓였으면 하루 한도 · 스팸함을 확인합니다. 탭에도 없으면 개발자에게 알립니다.</td></tr>
+      <tr><td><b>특정 탭에 기록이 안 쌓임</b></td><td>개발자에게 알립니다.</td></tr>
+      <tr><td><b>"정보를 불러오지 못했어요" · AI 답변이 계속 실패</b></td><td>개발자에게 알립니다.</td></tr>
+      <tr><td><b>챗봇이 틀린 정보를 말함</b></td><td><code>대화_로그</code>에서 그 답변을 찾고, FAQ · 지점 정보에 잘못된 문구가 있는지 보고 고칩니다. 시트에 없는 내용을 지어냈다면 개발자에게 알립니다.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="rules">
+  <h2><span class="no">12</span>지켜야 할 것</h2>
+  <div class="card">
+    <ul>
+      <li><b>탭 이름을 바꾸지 않습니다.</b> 챗봇이 탭을 이름으로 찾습니다. 바꿔야 하면 개발자에게 먼저 알립니다. 탭 <b>순서 · 색 · 숨김은 자유</b>입니다.</li>
+      <li><b>열 순서를 바꾸거나 중간에 열을 끼우지 않습니다.</b> 메모 열은 <b>맨 오른쪽</b>에만 추가합니다.</li>
+      <li>시트 메뉴의 <b><code>resetDataSheets</code>를 실행하지 않습니다.</b> 지점 · 창고 · 프리셋 탭이 샘플로 덮어써집니다.</li>
+      <li>자동 기록 탭(대화 · 상담요약 · 요청 · 알림 · 이벤트 · 3D · 피드백)은 고치지 않습니다.</li>
+      <li>고객 개인정보가 담긴 탭 · 메일은 전달하거나 캡처해 공유하지 않습니다.</li>
+      <li>값이 정해진 칸은 <b>글자 그대로</b> 씁니다: <span class="cellchip">홈페이지 결제</span> · <span class="cellchip">개별 운영</span> · 잠금장치 3종 이름 · 예약 퀵칩 키워드 · 지점명</li>
+      <li>직접 입력하는 칸(FAQ 답변 · 퀵칩 내용 등)은 <b><code>=</code> <code>+</code> <code>-</code>로 시작하지 않습니다.</b> 구글시트가 수식으로 바꿔 오류가 납니다. 목록을 <code>-</code>로 시작해야 하면 첫 줄은 다른 문장으로 시작합니다.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="dev">
+  <h2><span class="no">13</span>개발자에게 문의할 것</h2>
+  <p>아래는 시트로 바꿀 수 없는 일입니다. 직접 하지 말고 <b>개발자에게 문의</b>합니다.</p>
+  <div class="tablebox"><table>
+    <thead><tr><th>문의할 일</th><th>이유</th></tr></thead>
+    <tbody>
+      <tr><td><b>카카오톡 상담 링크 변경</b></td><td>서버 설정</td></tr>
+      <tr><td><b>알림 메일 받는 사람 변경</b></td><td>시트 프로그램 설정</td></tr>
+      <tr><td><b>탭 이름 변경 · 새 열 · 새 탭 추가</b></td><td>챗봇이 이름 · 위치로 읽음</td></tr>
+      <tr><td><b>챗봇 버튼 문구 · 화면 · 위치 · 새 기능</b></td><td>챗봇 화면 수정 (<a href="#widget">10장</a>)</td></tr>
+      <tr><td><b>AI 답변이 계속 실패 · 데이터를 못 불러옴 · 기록이 안 쌓임</b></td><td>서버 · 시트 프로그램 점검</td></tr>
+      <tr><td><b>운영시간 · 공휴일 처리 변경</b></td><td>챗봇 설정</td></tr>
+      <tr><td><b>빈자리 반영 속도 조정</b></td><td>서버 설정</td></tr>
+      <tr><td><b>AI 사용량 · 요금 한도</b></td><td>서버 설정 · 계정</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<footer>미니창고짐 챗봇 운영 가이드 · 2026.10 · 바뀌는 내용이 생기면 관리자가 이 문서를 고칩니다</footer>
+</div>
+
+</body>
+</html>
